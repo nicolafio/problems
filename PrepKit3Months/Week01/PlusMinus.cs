@@ -23,6 +23,14 @@ class Result
 
     public static void plusMinus(List<int> arr)
     {
+        var n = arr.Count;
+        var positive = (float)arr.FindAll(v => v > 0).Count / n;
+        var negative = (float)arr.FindAll(v => v < 0).Count / n;
+        var zero = 1 - positive - negative;
+        var format = "0.000000";
+        Console.WriteLine(positive.ToString(format));
+        Console.WriteLine(negative.ToString(format));
+        Console.WriteLine(zero.ToString(format));
     }
 
 }
