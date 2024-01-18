@@ -42,6 +42,7 @@ class Result
         var n = s.Length;
         var hh = s.Substring(0, 2);
         if (s[n - 2] == 'P') hh = pmHHform12to24[hh];
+        else if (hh == "12") hh = "00";
         return hh + s.Substring(2, 6);
     }
 
