@@ -21,10 +21,28 @@ class Result
      * The function is expected to return a STRING.
      * The function accepts STRING s as parameter.
      */
+    private static Dictionary<string, string> pmHHform12to24 =
+        new Dictionary<string, string>{
+            ["01"] = "13",
+            ["02"] = "14",
+            ["03"] = "15",
+            ["04"] = "16",
+            ["05"] = "17",
+            ["06"] = "18",
+            ["07"] = "19",
+            ["08"] = "20",
+            ["09"] = "21",
+            ["10"] = "22",
+            ["11"] = "23",
+            ["12"] = "12",
+        };
 
     public static string timeConversion(string s)
     {
-
+        var n = s.Length;
+        var hh = s.Substring(0, 2);
+        if (s[n - 2] == 'P') hh = pmHHform12to24[hh];
+        return hh + s.Substring(2, 6);
     }
 
 }
