@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreakingTheRecords", "Break
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CamelCase4", "CamelCase4\CamelCase4.csproj", "{67EE33FA-247E-4162-A7E5-058BD5440923}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DivisibleSumPairs", "DivisibleSumPairs\DivisibleSumPairs.csproj", "{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{67EE33FA-247E-4162-A7E5-058BD5440923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67EE33FA-247E-4162-A7E5-058BD5440923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67EE33FA-247E-4162-A7E5-058BD5440923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
