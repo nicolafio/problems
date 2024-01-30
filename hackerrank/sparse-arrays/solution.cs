@@ -26,10 +26,19 @@ class Result
 
     public static List<int> matchingStrings(List<string> strings, List<string> queries)
     {
-
+        var results = new List<int>();
+        foreach (var query in queries) {
+            int count = 0;
+            foreach (var str in strings) {
+                if (str.Equals(query)) count++;
+            }
+            results.Add(count);
+        }
+        return results;
     }
 
 }
+
 
 class Solution
 {
