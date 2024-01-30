@@ -16,5 +16,8 @@ function pickRandomLanguage(source) {
     return 'Python';
 }
 
-console.log(`Source: ${pickRandomSource()}`);
-console.log(`Language: ${pickRandomLanguage()}`);
+const source = pickRandomSource();
+const language = pickRandomLanguage(source);
+
+console.log(`Source: ${source}`);
+console.log(`Language: ${language}`);
