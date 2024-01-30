@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plus-minus", "plus-minus\pl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "time-conversion", "time-conversion\time-conversion.csproj", "{6E747FD2-193E-4D74-AE41-6EEAF7DB6213}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sparse-arrays", "sparse-arrays\sparse-arrays.csproj", "{DD616B5D-1FDD-4B14-A090-140223C57BCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{6E747FD2-193E-4D74-AE41-6EEAF7DB6213}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E747FD2-193E-4D74-AE41-6EEAF7DB6213}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E747FD2-193E-4D74-AE41-6EEAF7DB6213}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD616B5D-1FDD-4B14-A090-140223C57BCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD616B5D-1FDD-4B14-A090-140223C57BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD616B5D-1FDD-4B14-A090-140223C57BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD616B5D-1FDD-4B14-A090-140223C57BCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
