@@ -26,7 +26,9 @@ class Result
 
     public static int findMedian(List<int> arr)
     {
-
+        arr.Sort();
+        var n = arr.Count;
+        return arr[(n - 1) / 2];
     }
 
 }
