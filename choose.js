@@ -95,11 +95,13 @@ function pickRandomSource() {
 }
 
 function pickRandomLanguage(source) {
-    if (Math.random() < .6) return 'C#';
+    if (Math.random() < .6) {
+        if (Math.random() < .5) return 'C#';
+        return 'Python';
+    };
     if (Math.random() < .6) return 'C++';
     if (Math.random() < .6) return 'C';
-    if (Math.random() < .6) return 'JavaScript';
-    return 'Python';
+    return 'JavaScript';
 }
 
 function pickRandomProblem(source) {
