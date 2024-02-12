@@ -14,8 +14,8 @@ string rtrim(const string &);
  * The function accepts LONG_INTEGER n as parameter.
  */
 
-long flippingBits(long n) {
-
+unsigned int flippingBits(unsigned int n) {
+    return ~n;   
 }
 
 int main()
@@ -33,7 +33,7 @@ int main()
 
         long n = stol(ltrim(rtrim(n_temp)));
 
-        long result = flippingBits(n);
+        unsigned int result = flippingBits(n);
 
         fout << result << "\n";
     }
