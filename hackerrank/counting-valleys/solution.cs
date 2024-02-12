@@ -26,9 +26,19 @@ class Result
 
     public static int countingValleys(int steps, string path)
     {
+        int altitude = 0;
+        int valleys = 0;
 
+        foreach (var step in path) {
+            if (step == 'D') altitude--;
+            if (step == 'U') {
+                altitude++;
+                if (altitude == 0) valleys++;
+            }
+        }
+
+        return valleys;
     }
-
 }
 
 class Solution
