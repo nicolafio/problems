@@ -31,7 +31,24 @@ function readLine() {
 
 function gradingStudents(grades) {
     // Write your code here
+    const rounded = [];
 
+    for (const grade of grades) {
+        if (grade < 38) {
+            rounded.push(grade);
+            continue;
+        }
+
+        const difference = 5 - (grade % 5);
+        if (difference < 3) {
+            rounded.push(grade + difference);
+            continue;
+        }
+
+        rounded.push(grade);
+    }
+
+    return rounded;
 }
 
 function main() {
