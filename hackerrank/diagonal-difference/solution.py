@@ -15,6 +15,10 @@ import sys
 
 def diagonalDifference(arr):
     # Write your code here
+    n = len(arr)
+    s1 = sum([arr[i][i] for i in range(n)])
+    s2 = sum([arr[i][n - i - 1] for i in range(n)])
+    return abs(s1 - s2)
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
