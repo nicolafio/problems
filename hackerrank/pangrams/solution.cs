@@ -14,6 +14,8 @@ using System;
 
 class Result
 {
+    private const string ENGLISH_ALPHABET =
+        "abcdefghijklmnopqrstuvwxyz";
 
     /*
      * Complete the 'pangrams' function below.
@@ -24,7 +26,17 @@ class Result
 
     public static string pangrams(string s)
     {
+        var uniqueLettersCount =
+            s.ToLower()
+                .ToCharArray()
+                .Where(c => ENGLISH_ALPHABET.Contains(c))
+                .ToHashSet()
+                .Count();
 
+        var isPangram = uniqueLettersCount == ENGLISH_ALPHABET.Length;
+
+        if (isPangram) return "pangram";
+        return "not pangram";
     }
 
 }
