@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "find-the-median", "find-the
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "counting-valleys", "counting-valleys\counting-valleys.csproj", "{4734FE25-AEEF-441F-B45C-6D37277C2D1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pangrams", "pangrams\pangrams.csproj", "{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{4734FE25-AEEF-441F-B45C-6D37277C2D1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4734FE25-AEEF-441F-B45C-6D37277C2D1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4734FE25-AEEF-441F-B45C-6D37277C2D1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
