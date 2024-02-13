@@ -15,6 +15,13 @@ import sys
 
 def lonelyinteger(a):
     # Write your code here
+    integersFoundOnce = set()
+    for i in a:
+        if i in integersFoundOnce:
+            integersFoundOnce.remove(i)
+        else:
+            integersFoundOnce.add(i)
+    return next(iter(integersFoundOnce))
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
