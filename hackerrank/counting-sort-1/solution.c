@@ -51,7 +51,20 @@ int parse_int(char*);
  *
  */
 int* countingSort(int arr_count, int* arr, int* result_count) {
+    *result_count = 100;
 
+    int *result = malloc(100 * sizeof(int));
+    
+    for (int i = 0; i < 100; i++) {
+        *(result + i) = 0;
+    }
+
+    for (int i = 0; i < arr_count; i++) {
+        int integer = *(arr + i);
+        *(result + integer) += 1;
+    }
+
+    return result;
 }
 
 int main()
