@@ -26,6 +26,7 @@ function pickRandomSource() {
     };
 
     // ICPC
+    // https://icpcarchive.github.io/
 
     if (Math.random() < .2)
         return 'https://icpc.global/worldfinals/past-problems';
@@ -84,14 +85,46 @@ function pickRandomSource() {
     }
 
     if (Math.random() < .6) {
-        // ICPC Russia & China...
-        console.log('Todo: choices to be expanded for Russia & China');
-        return 'https://icpc.global/regionals/finder';
+        // Asia Pacific
+        // https://icpc.global/regionals/finder/apsep
+
+        console.log('Todo: choices to be expanded for Asia Pacific');
+        return 'https://icpcarchive.github.io/';
+    }
+
+    if (Math.random() < .6) {
+        // Asia East
+        // https://icpc.global/regionals/finder/AEC
+
+        const city = pickRandomItem([
+            'Hangzhou',
+            'Hefei',
+            'Hongkong',
+            'Jinan',
+            'Macau',
+            'Nanjing',
+            'Shanghai',
+            'Shenyang',
+            'Yinchuan',
+        ]);
+
+        if (city === 'Yinchuan') {
+            // https://icpcarchive.github.io/Yinchuan.html
+            // Only 2019 is present.
+
+            console.log('For Yinchuan, are there newer contests than 2019?');
+            console.log('Refer to https://icpcarchive.github.io/Yinchuan.html')
+
+            return `file://${__dirname}/icpc/ayrc-2019/problems.pdf`;
+        }
+
+        console.log('Todo: choices to be expanded for Asia East');
+        return 'https://icpcarchive.github.io/';
     }
 
     // ICPC - rest of the world...
     console.log('Todo: choices to be expanded for regionals that are not North America, Europe, Russia, China');
-    return 'https://icpc.global/regionals/finder';
+    return 'https://icpcarchive.github.io/';
 }
 
 function pickRandomLanguage(source) {
@@ -107,6 +140,8 @@ function pickRandomLanguage(source) {
 function pickRandomProblem(source) {
     if (source.includes('http://acm.ro/2019'))
         return pickRandomItem('ABCDEFGHIJK');
+    if (source.includes('icpc/ayrc-2019'))
+        return pickRandomItem('ABCDEFGHIJKLMN');
 }
 
 function pickRandomItem(items) {
