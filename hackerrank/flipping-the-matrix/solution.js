@@ -33,7 +33,23 @@ function readLine() {
 
 function flippingMatrix(matrix) {
     // Write your code here
+    const n = matrix.length;
+    let sum = 0;
 
+    for (let i1 = 0; i1 < n / 2; i1++) {
+        for (let j1 = 0; j1 < n / 2; j1++) {
+            const i2 = n - i1 - 1;
+            const j2 = n - j1 - 1;
+            sum += Math.max(
+                matrix[i1][j1],
+                matrix[i1][j2],
+                matrix[i2][j1],
+                matrix[i2][j2]
+            );
+        }
+    }
+
+    return sum;
 }
 
 function main() {
