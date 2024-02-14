@@ -37,7 +37,7 @@ def flippingMatrix(matrix):
                     matrix[i][j] = flippedRow[j]
 
             topColumnSum =      sum([matrix[j][i] for j in firstHalf])
-            bottomColumnSum =   sum([matrix[j][j] for j in secondHalf])
+            bottomColumnSum =   sum([matrix[j][i] for j in secondHalf])
             if bottomColumnSum > topColumnSum:
                 settled = False
                 flippedColumn = [matrix[n - j - 1][i] for j in range(n)]
