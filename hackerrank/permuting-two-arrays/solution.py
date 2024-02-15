@@ -5,6 +5,7 @@ import os
 import random
 import re
 import sys
+from collections import Counter
 
 #
 # Complete the 'twoArrays' function below.
@@ -18,6 +19,20 @@ import sys
 
 def twoArrays(k, A, B):
     # Write your code here
+    n = len(A)
+    A_sorted = sorted(A)
+    B_sorted_counter = Counter(sorted(B))
+
+    for a in A_sorted:
+        for b in B_sorted_counter.elements():
+            if a + b >= k:
+                B_sorted_counter[b] -= 1
+                break
+
+    if B_sorted_counter.total() == 0:
+        return "YES"
+
+    return "NO"
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
