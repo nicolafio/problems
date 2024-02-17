@@ -28,6 +28,21 @@ function pickRandomSource() {
     // ICPC
     // https://icpcarchive.github.io/
 
+    if (Math.random < .8) {
+        // Use the Korean online judge. 
+
+        const firstIndex = 1000;
+        const lastIndex = 31415;
+        const problemRange = lastIndex - firstIndex + 1;
+        const problem = firstIndex + Math.floor(Math.random() * problemRange);
+
+        console.log(`Todo: find out automatically if there are problems later than #${lastIndex}`);
+
+        return `https://www.acmicpc.net/problem/${problem}`;
+    }
+
+    // Use the dedicated websites for ICPC world / regional problems.
+
     if (Math.random() < .2)
         return 'https://icpc.global/worldfinals/past-problems';
 
@@ -122,9 +137,32 @@ function pickRandomSource() {
         return 'https://icpcarchive.github.io/';
     }
 
-    // ICPC - rest of the world...
-    console.log('Todo: choices to be expanded for regionals that are not North America, Europe, Russia, China');
-    return 'https://icpcarchive.github.io/';
+    if (Math.random() < .6) {
+        // Africa and Arab Contests
+        // https://icpcarchive.github.io/Arab_Collegiate_Programming_Championship.html
+        // Only Arab 2018 is present.
+
+        console.log('Todo: choices to be expanded for Africa and Arab Contests');
+        return 'https://icpcarchive.github.io/Arab_Collegiate_Programming_Championship.html'
+    }
+
+    // Latin America
+    // https://icpcarchive.github.io/Latin_American_Regional_Contest.html
+    const years = new Set([...range(2012, ICPC_LATEST_YEAR + 1)]);
+    years.delete(2014);
+    years.delete(2018);
+    years.delete(2019);
+    years.delete(2021);
+
+    const year = pickRandomItem([...years]);
+
+    if (year === 2020) {
+        return `file://${__dirname}/icpc/larc-2020/problems.pdf`;
+    }
+
+    console.log(`Todo: choices to be expanded for LARC, year ${year}`);
+
+    return 'https://icpcarchive.github.io/Latin_American_Regional_Contest.html';
 }
 
 function pickRandomLanguage(source) {
@@ -140,7 +178,11 @@ function pickRandomLanguage(source) {
 function pickRandomProblem(source) {
     if (source.includes('http://acm.ro/2019'))
         return pickRandomItem('ABCDEFGHIJK');
+    
     if (source.includes('icpc/ayrc-2019'))
+        return pickRandomItem('ABCDEFGHIJKLMN');
+
+    if (source.includes('icpc/larc-2020'))
         return pickRandomItem('ABCDEFGHIJKLMN');
 }
 
