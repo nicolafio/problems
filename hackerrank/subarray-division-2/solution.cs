@@ -27,7 +27,18 @@ class Result
 
     public static int birthday(List<int> s, int d, int m)
     {
+        var n = s.Count;
+        var count = 0;
 
+        if (n < m) return 0;
+
+        for (var i = 0; i <= n - m; i++) {
+            var sum = 0;
+            for (var j = i; j < i + m; j++) sum += s[j];
+            if (sum == d) count++;
+        }
+
+        return count;
     }
 
 }
