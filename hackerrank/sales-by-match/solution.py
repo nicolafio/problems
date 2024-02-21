@@ -17,6 +17,12 @@ import sys
 
 def sockMerchant(n, ar):
     # Write your code here
+    pairs = 0
+    colors = set(ar)
+    for color in colors:
+        count = len([c for c in ar if c == color])
+        pairs += int(count / 2)
+    return pairs
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
