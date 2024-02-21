@@ -15,6 +15,23 @@ import sys
 
 def migratoryBirds(arr):
     # Write your code here
+    counts = dict()
+
+    for typeId in arr:
+        if typeId not in counts:
+            counts[typeId] = 0
+        counts[typeId] += 1
+
+    types = sorted(set(arr))
+    maxCount = -1
+    mostFrequentType = -1
+
+    for typeId in types:
+        if counts[typeId] > maxCount:
+            maxCount = counts[typeId]
+            mostFrequentType = typeId
+    
+    return mostFrequentType
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
