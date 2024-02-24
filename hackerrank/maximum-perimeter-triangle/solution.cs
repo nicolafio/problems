@@ -27,25 +27,27 @@ class Result
         sticks.Sort();
 
         var n = sticks.Count;
+        long maxPerimeter = -1;
         var bestTriangle = new List<int>{-1};
 
         for (int i = n - 1; i >= 0; i--) {
             for (int j = 0; j < i; j++) {
                 for (int k = j + 1; k < i; k++) {
-                    var maximumSide = sticks[i];
-                    var minimumSide = sticks[j];
-                    var medianSide = sticks[k];
+                    long maximumSide = sticks[i];
+                    long minimumSide = sticks[j];
+                    long medianSide = sticks[k];
 
                     var isNonDegenerate = medianSide + minimumSide > maximumSide;
                     
                     if (isNonDegenerate) {
-                        var perimeter = maximumSide + medianSide + minimumSide;
+                        long perimeter = maximumSide + medianSide + minimumSide;
                     
-                        if (perimeter > bestTriangle.Sum()) {
+                        if (perimeter > maxPerimeter) {
+                            maxPerimeter = perimeter;
                             bestTriangle = new List<int>{
-                                minimumSide,
-                                medianSide,
-                                maximumSide
+                                (int)minimumSide,
+                                (int)medianSide,
+                                (int)maximumSide
                             };
                         }
                     }
