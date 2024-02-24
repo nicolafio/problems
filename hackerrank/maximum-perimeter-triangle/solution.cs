@@ -24,7 +24,36 @@ class Result
 
     public static List<int> maximumPerimeterTriangle(List<int> sticks)
     {
+        sticks.Sort();
 
+        var n = sticks.Count;
+        var bestTriangle = new List<int>{-1};
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = 0; j < i; j++) {
+                for (int k = j + 1; k < i; k++) {
+                    var maximumSide = sticks[i];
+                    var minimumSide = sticks[j];
+                    var medianSide = sticks[k];
+
+                    var isNonDegenerate = medianSide + minimumSide > maximumSide;
+                    
+                    if (isNonDegenerate) {
+                        var perimeter = maximumSide + medianSide + minimumSide;
+                    
+                        if (perimeter > bestTriangle.Sum()) {
+                            bestTriangle = new List<int>{
+                                minimumSide,
+                                medianSide,
+                                maximumSide
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        return bestTriangle;
     }
 
 }
