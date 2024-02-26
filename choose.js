@@ -3,6 +3,12 @@ const ICPC_LATEST_YEAR = 2022;
 
 function pickRandomSource() {
 
+    // Use the Korean online judge. 
+
+    if (Math.random < .6) {
+        return `https://www.acmicpc.net/problem/random/all`;
+    }
+
     // HackerRank
 
     if (Math.random() < .8) {
@@ -27,19 +33,6 @@ function pickRandomSource() {
 
     // ICPC
     // https://icpcarchive.github.io/
-
-    if (Math.random < .8) {
-        // Use the Korean online judge. 
-
-        const firstIndex = 1000;
-        const lastIndex = 31415;
-        const problemRange = lastIndex - firstIndex + 1;
-        const problem = firstIndex + Math.floor(Math.random() * problemRange);
-
-        console.log(`Todo: find out automatically if there are problems later than #${lastIndex}`);
-
-        return `https://www.acmicpc.net/problem/${problem}`;
-    }
 
     // Use the dedicated websites for ICPC world / regional problems.
 
