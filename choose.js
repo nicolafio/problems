@@ -46,12 +46,61 @@ function pickRandomSource() {
     if (Math.random() < .2)
         return 'https://icpc.global/worldfinals/past-problems';
 
-    if (Math.random() < .6) {
+    if (Math.random() < .6 ) {
 
         // North America & Europe
 
-        if (Math.random() < .5) {
-            console.log('Todo: choices to be expanded');
+        if (Math.random() < .5 ) {
+            // https://icpc.global/regionals/finder/na
+
+            const region = pickRandomItem([
+                'Pacific Northwest',
+                'Rocky Mountain',
+                'North Central',
+                'East Central',
+                'Northeastern',
+                'New York',
+                'Mid Atlantic',
+                'Southest',
+                'Mid Central',
+                'South Central',
+                'Southern California'
+            ]);
+
+            if (region === 'Mid Central') {
+                // https://icpc.global/regionals/finder/Mid-Central-USA
+                // https://na.icpc.global/mcna/archive/
+                // https://www.acmicpc.net/category/37
+
+                const years = new Set([...range(1995, ICPC_LATEST_YEAR)]);
+                years.delete(2020);
+                years.delete(2021);
+                
+                const year = pickRandomItem([...years]);
+                
+                if (year === 2007) {
+                    // Using the Korean archive since the official one is
+                    // offline at the time of writing this.
+
+                    // https://www.acmicpc.net/category/detail/145
+
+                    const problem = pickRandomItem('ABCDEFGH');
+
+                    if (problem === 'A') return 'https://www.acmicpc.net/problem/4605';
+                    if (problem === 'B') return 'https://www.acmicpc.net/problem/4606';
+                    if (problem === 'C') return 'https://www.acmicpc.net/problem/4607';
+                    if (problem === 'D') return 'https://www.acmicpc.net/problem/4608';
+                    if (problem === 'E') return 'https://www.acmicpc.net/problem/4609';
+                    if (problem === 'F') return 'https://www.acmicpc.net/problem/4610';
+                    if (problem === 'G') return 'https://www.acmicpc.net/problem/4611';
+                    if (problem === 'H') return 'https://www.acmicpc.net/problem/4612';
+                }
+
+                console.log(`Todo: choices to be expanded for MCNA ${year}`);
+            }
+
+            console.log(`Todo: choices to be expanded for North America ${region}`);
+
             return 'https://icpc.global/regionals/finder/na';
         }
 
