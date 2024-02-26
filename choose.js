@@ -166,8 +166,10 @@ function pickRandomSource() {
 }
 
 function pickRandomLanguage(source) {
-    if (Math.random() < .75) return 'Python';
-    if (Math.random() < .6) return 'C#';
+    if (Math.random() < .75) {
+        if (Math.random() < .5) return 'Python';
+        return 'C#';
+    }
     if (Math.random() < .6) return 'C++';
     if (Math.random() < .6) return 'C';
     return 'JavaScript';
