@@ -23,6 +23,8 @@ These instructions are for macOS.
 *   Install required extensions.
     *   C# support: [C#], [C# Dev Kit].
     *   C++ support: [C/C++ Extension Pack].
+    *   Rust support: [rust-analyzer].
+    *   Java support: [vscode-java].
 *   Install [Homebrew].
 *   `brew install gcc`.
 
@@ -36,3 +38,5 @@ https://github.com/VSCodium/vscodium/blob/f3a6b95/docs/index.md#how-to-use-a-dif
 [C# Dev Kit]: https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit
 [C/C++ Extension Pack]: https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack
 [Homebrew]: https://brew.sh/
+[rust-analyzer]: https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer
+[vscode-java]: https://marketplace.visualstudio.com/items?itemName=redhat.java

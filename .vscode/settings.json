@@ -1,5 +1,9 @@
 {
     "files.associations": {
         "string": "cpp"
+    },
+    "dotnet.defaultSolution": "ads.sln",
+    "github.copilot.enable": {
+        "*": false
     }
 }

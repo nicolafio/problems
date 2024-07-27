@@ -1,0 +1,19 @@
+Aoi, a student at JOI High School, decides to decorate the hallway at the school festival.
+
+The decoration is made by arranging N light bulbs in a row in the east-west direction. The bulbs are numbered from 1 to N, starting from the west side. Each bulb has two states, on and off, and the first bulb is all off.
+
+The pattern of lights that Aoi targets is represented by the sequence A1, A2, ..., AN, where Ai is the number of lights in the sequence A1, A2, ..., AN. Aoi wants bulb i to be on when Ai = 1 and off when Ai = 0. Aoi wanted to achieve this pattern in the shortest possible time.
+
+Aoi can perform the following operations only once at the beginning, but she does not have to do them.
+
+Turns on the light bulb in the continuous section from the west end. That is, she chooses one integer r between 1 and N, and turns on bulbs 1, 2, ..., r. Turn on bulbs 1, 2, ... , r.
+The time required to perform this operation is negligible.
+
+After that, the following operations can be performed any number of times.
+
+Select a light bulb and change its state (turn it off if it is on, turn it on if it is off).
+Each time this operation is performed, it takes one minute.
+
+Given the number of bulbs and the target decoration pattern, write a program to find the minimum number of minutes it will take Aoi to achieve the target pattern.
+
+Translated with DeepL.com (free version)
