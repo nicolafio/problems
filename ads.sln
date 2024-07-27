@@ -3,29 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # 
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "breaking-the-records", "breaking-the-records\breaking-the-records.csproj", "{1FB3CC5D-7532-498A-AADA-D85644D5B79A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "breaking-the-records", "hackerrank\breaking-the-records\breaking-the-records.csproj", "{1FB3CC5D-7532-498A-AADA-D85644D5B79A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "camel-case-4", "camel-case-4\camel-case-4.csproj", "{67EE33FA-247E-4162-A7E5-058BD5440923}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "camel-case-4", "hackerrank\camel-case-4\camel-case-4.csproj", "{67EE33FA-247E-4162-A7E5-058BD5440923}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "divisible-sum-pairs", "divisible-sum-pairs\divisible-sum-pairs.csproj", "{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "divisible-sum-pairs", "hackerrank\divisible-sum-pairs\divisible-sum-pairs.csproj", "{7A638D7B-CF5F-49B0-A7C2-E10E02191C64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mini-max-sum", "mini-max-sum\mini-max-sum.csproj", "{B3F90D40-5D81-42B0-836E-66373F287CA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mini-max-sum", "hackerrank\mini-max-sum\mini-max-sum.csproj", "{B3F90D40-5D81-42B0-836E-66373F287CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plus-minus", "plus-minus\plus-minus.csproj", "{9C34C7D5-EF05-4F07-AEBF-615EAE96B8C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plus-minus", "hackerrank\plus-minus\plus-minus.csproj", "{9C34C7D5-EF05-4F07-AEBF-615EAE96B8C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "time-conversion", "time-conversion\time-conversion.csproj", "{6E747FD2-193E-4D74-AE41-6EEAF7DB6213}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "time-conversion", "hackerrank\time-conversion\time-conversion.csproj", "{6E747FD2-193E-4D74-AE41-6EEAF7DB6213}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sparse-arrays", "sparse-arrays\sparse-arrays.csproj", "{DD616B5D-1FDD-4B14-A090-140223C57BCA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sparse-arrays", "hackerrank\sparse-arrays\sparse-arrays.csproj", "{DD616B5D-1FDD-4B14-A090-140223C57BCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "find-the-median", "find-the-median\find-the-median.csproj", "{BF583D06-A194-4EC1-A8A8-99CE6D4239FB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "find-the-median", "hackerrank\find-the-median\find-the-median.csproj", "{BF583D06-A194-4EC1-A8A8-99CE6D4239FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "counting-valleys", "counting-valleys\counting-valleys.csproj", "{4734FE25-AEEF-441F-B45C-6D37277C2D1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "counting-valleys", "hackerrank\counting-valleys\counting-valleys.csproj", "{4734FE25-AEEF-441F-B45C-6D37277C2D1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pangrams", "pangrams\pangrams.csproj", "{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pangrams", "hackerrank\pangrams\pangrams.csproj", "{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "subarray-division-2", "subarray-division-2\subarray-division-2.csproj", "{0896DE3D-26D0-42B2-8E14-248966779B0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "subarray-division-2", "hackerrank\subarray-division-2\subarray-division-2.csproj", "{0896DE3D-26D0-42B2-8E14-248966779B0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maximum-perimeter-triangle", "maximum-perimeter-triangle\maximum-perimeter-triangle.csproj", "{116A2E3B-9775-4E85-8945-4C9142831451}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "maximum-perimeter-triangle", "hackerrank\maximum-perimeter-triangle\maximum-perimeter-triangle.csproj", "{116A2E3B-9775-4E85-8945-4C9142831451}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hackerrank", "hackerrank", "{B06D4C3A-4B36-4D78-A63F-AB861A91193E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grid-challenge", "hackerrank\grid-challenge\grid-challenge.csproj", "{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,8 +85,27 @@ Global
 		{116A2E3B-9775-4E85-8945-4C9142831451}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{116A2E3B-9775-4E85-8945-4C9142831451}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{116A2E3B-9775-4E85-8945-4C9142831451}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1FB3CC5D-7532-498A-AADA-D85644D5B79A} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{67EE33FA-247E-4162-A7E5-058BD5440923} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{7A638D7B-CF5F-49B0-A7C2-E10E02191C64} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{B3F90D40-5D81-42B0-836E-66373F287CA9} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{9C34C7D5-EF05-4F07-AEBF-615EAE96B8C6} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{6E747FD2-193E-4D74-AE41-6EEAF7DB6213} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{DD616B5D-1FDD-4B14-A090-140223C57BCA} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{BF583D06-A194-4EC1-A8A8-99CE6D4239FB} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{4734FE25-AEEF-441F-B45C-6D37277C2D1F} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{2DB9CB61-A06F-4C44-B1E4-A637A6EC0BBC} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{0896DE3D-26D0-42B2-8E14-248966779B0A} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{116A2E3B-9775-4E85-8945-4C9142831451} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
 	EndGlobalSection
 EndGlobal

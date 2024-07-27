@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <LangVersion>6</LangVersion>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>here_we_go_relians__again</RootNamespace>
+  </PropertyGroup>
+
+</Project>

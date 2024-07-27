@@ -1,0 +1,10 @@
+[package]
+authors = ["Nicola Fiori <nicola@jd342.net>"]
+name = "problems"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "max-min"
+path = "hackerrank/max-min/solution.rs"
+
