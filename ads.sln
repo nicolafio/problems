@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # 
 VisualStudioVersion = 17.5.002.0
@@ -30,6 +30,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "hackerrank", "hackerrank", "{B06D4C3A-4B36-4D78-A63F-AB861A91193E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "grid-challenge", "hackerrank\24q2\grid-challenge\grid-challenge.csproj", "{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prime-dates", "hackerrank\24q3\prime-dates\prime-dates.csproj", "{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,10 @@ Global
 		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +113,6 @@ Global
 		{0896DE3D-26D0-42B2-8E14-248966779B0A} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
 		{116A2E3B-9775-4E85-8945-4C9142831451} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
 		{F981D2FB-FCCF-49B5-80DB-6DB88A0B0E0C} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
+		{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
 	EndGlobalSection
 EndGlobal
