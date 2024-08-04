@@ -28,20 +28,14 @@ function pickRandomSource() {
 }
 
 function pickRandomLanguage() {
-    if (Math.random() < .6) {
-        const item = pickRandomItem(['C/C++', 'Python']);
-
-        if (item == 'C/C++') {
-            if (Math.random() < .6) return 'C++';
-            return 'C';
-        }
-
-        return item;
-    }
+    if (Math.random() < .6) return 'C++';
     if (Math.random() < .6) return 'C#';
+    if (Math.random() < .6) return 'Python';
+    if (Math.random() < .6) return 'C';
     if (Math.random() < .6) return 'Scala';
     if (Math.random() < .6) return 'Java';
     if (Math.random() < .6) return 'Rust';
+    if (Math.random() < .6) return 'Go';
     return 'JavaScript';
 }
 
