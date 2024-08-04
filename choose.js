@@ -36,6 +36,7 @@ function pickRandomLanguage() {
     if (Math.random() < .6) return 'Java';
     if (Math.random() < .6) return 'Rust';
     if (Math.random() < .6) return 'Go';
+    if (Math.random() < .6) return 'TypeScript';
     return 'JavaScript';
 }
 
