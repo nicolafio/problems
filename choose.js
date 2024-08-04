@@ -45,8 +45,8 @@ function pickRandomItem(items) {
 
 const args = process.argv.slice(2);
 const noArgs = args.length === 0;
-const askingSource = noArgs || args.includes("source");
-const askingLanguage = noArgs || args.includes("language");
+const askingSource = noArgs || ["source", "src", "s"].some((a) => args.includes(a));
+const askingLanguage = noArgs || ["language", "lang", "l"].some((a) => args.includes(a));
 
 if (askingSource)
     console.log(`Source: ${pickRandomSource()}`);
