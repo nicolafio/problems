@@ -11,8 +11,10 @@
  *     }
  * }
  */
-public class Solution {
-    public int DiameterOfBinaryTree(TreeNode root) {
+public class Solution
+{
+    public int DiameterOfBinaryTree(TreeNode root)
+    {
         var parentMemo = new Dictionary<TreeNode, TreeNode?>();
         parentMemo[root] = null;
         recordParents(root, parentMemo);
@@ -20,14 +22,17 @@ public class Solution {
         var nodes = parentMemo.Keys;
         var distance = new Dictionary<(TreeNode, TreeNode), int>();
 
-        foreach (var node in nodes) {
+        foreach (var node in nodes)
+        {
             var candidates = new List<TreeNode?>() {
                 node.left,
                 node.right,
                 parentMemo[node]
             };
-            foreach (var candidate in candidates) {
-                if (candidate != null) {
+            foreach (var candidate in candidates)
+            {
+                if (candidate != null)
+                {
                     distance[(node, candidate)] = 1;
                     distance[(candidate, node)] = 1;
                 }
@@ -38,23 +43,72 @@ public class Solution {
 
         int n = 0;
 
-        while (!settled) {
+        while (!settled)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("---");
+            Console.WriteLine("");
             settled = true;
-            foreach (var a in nodes) {
-                foreach (var b in nodes) {
+            foreach (var a in nodes)
+            {
+                foreach (var b in nodes)
+                {
                     if (a == b) continue;
-                    foreach (var c in nodes) {
+                    foreach (var c in nodes)
+                    {
                         if (a == c) continue;
                         if (b == c) continue;
-                        if (distance.ContainsKey((a, b)) && distance.ContainsKey((b, c))) {
+                        if (distance.ContainsKey((a, b)) && distance.ContainsKey((b, c)))
+                        {
                             n++;
                             var ab = distance[(a, b)];
                             var bc = distance[(b, c)];
                             var ac = -1;
                             if (distance.ContainsKey((a, c))) ac = distance[(a, c)];
-                            if (ab + bc > ac) {
+
+                            Console.Write(a.val);
+                            Console.Write(b.val);
+                            Console.Write("=");
+                            Console.Write(ab);
+                            Console.Write("; ");
+
+                            Console.Write(b.val);
+                            Console.Write(c.val);
+                            Console.Write("=");
+                            Console.Write(bc);
+                            Console.Write("; ");
+
+                            Console.Write(a.val);
+                            Console.Write(b.val);
+                            Console.Write(c.val);
+                            Console.Write("=");
+                            Console.Write(ab + bc);
+                            Console.Write("; ");
+
+                            Console.Write(a.val);
+                            Console.Write(c.val);
+                            Console.Write("=");
+                            Console.Write(ac);
+                            Console.Write("; ");
+
+                            if (ab + bc > ac)
+                            {
                                 settled = false;
                                 distance[(a, c)] = distance[(c, a)] = ab + bc;
+                                Console.Write(a.val);
+                                Console.Write(b.val);
+                                Console.Write(c.val);
+                                Console.Write("=");
+                                Console.Write(ab + bc);
+                                Console.WriteLine(" is better ✓");
+                            }
+                            else
+                            {
+                                Console.Write(a.val);
+                                Console.Write(c.val);
+                                Console.Write("=");
+                                Console.Write(ac);
+                                Console.WriteLine(" is better ✗");
                             }
                         }
                     }
@@ -70,9 +124,12 @@ public class Solution {
     private void recordParents(
         TreeNode node,
         Dictionary<TreeNode, TreeNode?> parentMemo
-    ) {
-        foreach (var n in new List<TreeNode?>{node.left, node.right}) {
-            if (n != null) {
+    )
+    {
+        foreach (var n in new List<TreeNode?> { node.left, node.right })
+        {
+            if (n != null)
+            {
                 parentMemo[n] = node;
                 recordParents(n, parentMemo);
             }
