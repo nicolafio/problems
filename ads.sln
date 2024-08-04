@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "24q3", "24q3", "{2A4913FA-E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "diameter-of-binary-tree", "leetcode\24q3\diameter-of-binary-tree\diameter-of-binary-tree.csproj", "{2E9D96B0-62C9-4992-A038-6894930F3527}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "largest-substring-between-two-equal-characters", "leetcode\24q3\largest-substring-between-two-equal-characters\largest-substring-between-two-equal-characters.csproj", "{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{2E9D96B0-62C9-4992-A038-6894930F3527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E9D96B0-62C9-4992-A038-6894930F3527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E9D96B0-62C9-4992-A038-6894930F3527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,5 +132,6 @@ Global
 		{CCBA5E34-553C-4B03-AFD2-50B66EFC7EE0} = {B06D4C3A-4B36-4D78-A63F-AB861A91193E}
 		{2A4913FA-EC0A-4D4A-8BE9-B4E81361469D} = {90D4F0A3-61C5-4AE0-83EA-907B8F3CC5E3}
 		{2E9D96B0-62C9-4992-A038-6894930F3527} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
+		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
 	EndGlobalSection
 EndGlobal
