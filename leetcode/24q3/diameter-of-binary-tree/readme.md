@@ -1,3 +1,4 @@
+# [543. Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree)
 
 <p>Given the <code>root</code> of a binary tree, return <em>the length of the <strong>diameter</strong> of the tree</em>.</p>
 
