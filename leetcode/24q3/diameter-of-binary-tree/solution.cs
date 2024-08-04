@@ -1,8 +1,4 @@
-﻿
-using System.Reflection;
-
-
-/**
+﻿/**
  * Definition for a binary tree node.
  * public class TreeNode {
  *     public int val;
@@ -18,74 +14,58 @@ using System.Reflection;
 public class Solution {
     public int DiameterOfBinaryTree(TreeNode root) {
         var parentMemo = new Dictionary<TreeNode, TreeNode?>();
-
+        parentMemo[root] = null;
         recordParents(root, parentMemo);
 
-        Console.Write("Root is ");
-        Console.WriteLine(root.val);
-        
-        Console.Write("Right of root is ");
-        if (root.right != null) Console.Write("not ");
-        Console.WriteLine("null");
+        var nodes = parentMemo.Keys;
+        var distance = new Dictionary<(TreeNode, TreeNode), int>();
 
-        if (root.right != null) {
-            Console.Write("Right of root is ");
-            Console.WriteLine(root.right.val);
-
-            Console.Write("Parent of ");
-            Console.Write(root.right.val);
-            Console.Write(" is ");
-            if (parentMemo[root.right] != null) Console.Write("not ");
-            Console.WriteLine("null");
-
-            if (parentMemo[root.right] != null) {
-                Console.Write("Parent of ");
-                Console.Write(root.right.val);
-                Console.Write(" is ");
-                Console.WriteLine(parentMemo[root.right].val);
+        foreach (var node in nodes) {
+            var candidates = new List<TreeNode?>() {
+                node.left,
+                node.right,
+                parentMemo[node]
+            };
+            foreach (var candidate in candidates) {
+                if (candidate != null) {
+                    distance[(node, candidate)] = 1;
+                    distance[(candidate, node)] = 1;
+                }
             }
         }
 
-        // Console.Write("Parent of ");
-        // Console.Write(root.right.val);
-        // Console.Write(" is ");
-        // Console.WriteLine("...");
-        // Console.WriteLine(parent[root.right].val);
+        bool settled = false;
 
-        return 0;
+        int n = 0;
+
+        while (!settled) {
+            settled = true;
+            foreach (var a in nodes) {
+                foreach (var b in nodes) {
+                    if (a == b) continue;
+                    foreach (var c in nodes) {
+                        if (a == c) continue;
+                        if (b == c) continue;
+                        if (distance.ContainsKey((a, b)) && distance.ContainsKey((b, c))) {
+                            n++;
+                            var ab = distance[(a, b)];
+                            var bc = distance[(b, c)];
+                            var ac = -1;
+                            if (distance.ContainsKey((a, c))) ac = distance[(a, c)];
+                            if (ab + bc > ac) {
+                                settled = false;
+                                distance[(a, c)] = distance[(c, a)] = ab + bc;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        Console.WriteLine(n);
+
+        return distance.Values.Max();
     }
-
-    // public int DiameterOfBinaryTree(TreeNode root) {
-    //     var parentMemo = new Dictionary<TreeNode, TreeNode?>(); 
-    //     var rightDepthMemo = new Dictionary<TreeNode, int>();
-    //     var leftDepthMemo = new Dictionary<TreeNode, int>();
-    //     var downDepthMemo = new Dictionary<TreeNode, int>();
-
-    //     parentMemo[root] = null;
-
-    //     recordParents(root, parentMemo);
-    //     recordDepth(root, downDepthMemo, (n) => new(){n.left, n.right});
-    //     recordDepth(root, rightDepthMemo, (n) => new(){n.right, parentMemo[n]});
-    //     recordDepth(root, leftDepthMemo, (n) => new(){n.left, parentMemo[n]});
-
-    //     var depthMemos = new List<Dictionary<TreeNode, int>>() {
-    //         rightDepthMemo,
-    //         leftDepthMemo,
-    //         downDepthMemo
-    //     };
-
-    //     int diameter = 0;
-
-    //     foreach (var depthMemo in depthMemos) {
-    //         foreach (var depth in depthMemo.Values) {
-    //             if (depth > diameter) {
-    //                 diameter = depth;
-    //             }
-    //         }
-    //     }
-
-    //     return diameter;
-    // }
 
     private void recordParents(
         TreeNode node,
@@ -98,23 +78,4 @@ public class Solution {
             }
         }
     }
-    
-    // private void recordDepth(
-    //     TreeNode node,
-    //     Dictionary<TreeNode, int> depthMemo,
-    //     Func<TreeNode, List<TreeNode?>> getNext
-    // ) {
-    //     if (depthMemo.ContainsKey(node)) return;
-
-    //     int depth = 0;
-
-    //     foreach (var next in getNext(node)) {
-    //         if (next != null) {
-    //             recordDepth(next, depthMemo, getNext);
-    //             depth += 1 + depthMemo[next];
-    //         }
-    //     }
-
-    //     depthMemo[node] = depth;
-    // }
 }
