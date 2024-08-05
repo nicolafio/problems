@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "diameter-of-binary-tree", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "largest-substring-between-two-equal-characters", "leetcode\24q3\largest-substring-between-two-equal-characters\largest-substring-between-two-equal-characters.csproj", "{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "check-if-a-word-occurs-as-a-prefix-of-any-word-in-sentence", "leetcode\24q3\check-if-a-word-occurs-as-a-prefix-of-any-word-in-sentence\check-if-a-word-occurs-as-a-prefix-of-any-word-in-sentence.csproj", "{CC137A03-439B-4F69-A8DA-074E5C75DF28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,5 +139,6 @@ Global
 		{2A4913FA-EC0A-4D4A-8BE9-B4E81361469D} = {90D4F0A3-61C5-4AE0-83EA-907B8F3CC5E3}
 		{2E9D96B0-62C9-4992-A038-6894930F3527} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
 		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
+		{CC137A03-439B-4F69-A8DA-074E5C75DF28} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
 	EndGlobalSection
 EndGlobal
