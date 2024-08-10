@@ -15,124 +15,74 @@ public class Solution
 {
     public int DiameterOfBinaryTree(TreeNode root)
     {
-        var parentMemo = new Dictionary<TreeNode, TreeNode?>();
-        parentMemo[root] = null;
-        recordParents(root, parentMemo);
+        Dictionary<TreeNode, TreeNode> parent = new();
+        Dictionary<TreeNode, List<TreeNode>> children = new();
+        HashSet<TreeNode> leafs = new();
+        HashSet<TreeNode> trees = new();
 
-        var nodes = parentMemo.Keys;
-        var distance = new Dictionary<(TreeNode, TreeNode), int>();
+        forEachNode(root, (node) => {
+            children[node] = new();
 
-        foreach (var node in nodes)
-        {
-            var candidates = new List<TreeNode?>() {
-                node.left,
-                node.right,
-                parentMemo[node]
-            };
-            foreach (var candidate in candidates)
-            {
-                if (candidate != null)
-                {
-                    distance[(node, candidate)] = 1;
-                    distance[(candidate, node)] = 1;
+            if (node.left == null && node.right == null) {
+                leafs.Add(node);
+            }
+            else {
+                trees.Add(node);
+            }
+            
+            if (node.left != null) {
+                children[node].Add(node.left);
+                parent[node.left] = node;
+            }
+            if (node.right != null) {
+                children[node].Add(node.right);
+                parent[node.right] = node;
+            }
+        });
+
+        Dictionary<TreeNode, int> depth = new();
+        Dictionary<TreeNode, int> height = new();
+
+        depth[root] = 0;
+
+        forEachNode(root, (node) => {
+            if (node == root) return;
+            
+            depth[node] = 1 + depth[parent[node]];
+        });
+
+        for (HashSet<TreeNode> front = leafs, next = new(); front.Count > 0; front = next, next = new()) {
+            foreach (var node in front) {
+                height[node] = 0;
+                foreach (var sub in children[node]) {
+                    height[node] = Math.Max(height[node], height[sub] + 1);
+                }
+                if (node != root) {
+                    next.Add(parent[node]);
                 }
             }
         }
 
-        bool settled = false;
-
-        int n = 0;
-
-        while (!settled)
-        {
-            Console.WriteLine("");
-            Console.WriteLine("---");
-            Console.WriteLine("");
-            settled = true;
-            foreach (var a in nodes)
-            {
-                foreach (var b in nodes)
-                {
-                    if (a == b) continue;
-                    foreach (var c in nodes)
-                    {
-                        if (a == c) continue;
-                        if (b == c) continue;
-                        if (distance.ContainsKey((a, b)) && distance.ContainsKey((b, c)))
-                        {
-                            n++;
-                            var ab = distance[(a, b)];
-                            var bc = distance[(b, c)];
-                            var ac = -1;
-                            if (distance.ContainsKey((a, c))) ac = distance[(a, c)];
-
-                            Console.Write(a.val);
-                            Console.Write(b.val);
-                            Console.Write("=");
-                            Console.Write(ab);
-                            Console.Write("; ");
-
-                            Console.Write(b.val);
-                            Console.Write(c.val);
-                            Console.Write("=");
-                            Console.Write(bc);
-                            Console.Write("; ");
-
-                            Console.Write(a.val);
-                            Console.Write(b.val);
-                            Console.Write(c.val);
-                            Console.Write("=");
-                            Console.Write(ab + bc);
-                            Console.Write("; ");
-
-                            Console.Write(a.val);
-                            Console.Write(c.val);
-                            Console.Write("=");
-                            Console.Write(ac);
-                            Console.Write("; ");
-
-                            if (ab + bc > ac)
-                            {
-                                settled = false;
-                                distance[(a, c)] = distance[(c, a)] = ab + bc;
-                                Console.Write(a.val);
-                                Console.Write(b.val);
-                                Console.Write(c.val);
-                                Console.Write("=");
-                                Console.Write(ab + bc);
-                                Console.WriteLine(" is better ✓");
-                            }
-                            else
-                            {
-                                Console.Write(a.val);
-                                Console.Write(c.val);
-                                Console.Write("=");
-                                Console.Write(ac);
-                                Console.WriteLine(" is better ✗");
-                            }
-                        }
-                    }
-                }
+        int maxDiameter = height[root];
+        
+        foreach (var node in trees) {
+            if (node.left != null && node.right != null) {
+                maxDiameter = Math.Max(maxDiameter, height[node.left] + height[node.right] + 2);
             }
         }
 
-        Console.WriteLine(n);
-
-        return distance.Values.Max();
+        return maxDiameter;
     }
 
-    private void recordParents(
-        TreeNode node,
-        Dictionary<TreeNode, TreeNode?> parentMemo
-    )
-    {
-        foreach (var n in new List<TreeNode?> { node.left, node.right })
-        {
-            if (n != null)
-            {
-                parentMemo[n] = node;
-                recordParents(n, parentMemo);
-            }
+    private void forEachNode(TreeNode node, Action<TreeNode> callback) {
+        callback(node);
+
+        if (node.left != null) {
+            forEachNode(node.left, callback);
+        }
+        
+        if (node.right != null) {
+            forEachNode(node.right, callback);
         }
     }
 }
