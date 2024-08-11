@@ -1,3 +1,24 @@
+main();
+
+function main() {
+    if (argsInclude("source", "src", "s"))
+        console.log(`Source: ${pickRandomSource()}`);
+    
+    if (argsInclude("language", "lang", "l"))
+        console.log(`Language: ${pickRandomLanguage()}`);
+}
+
+function argsInclude(...items) {
+    for (const item of items) {
+        for (let i = 2; i < process.argv.length; i++) {
+            if (item == process.argv[i]) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function pickRandomSource() {
 
     // Use the Korean online judge.
@@ -43,13 +64,3 @@ function pickRandomLanguage() {
 function pickRandomItem(items) {
     return items[Math.floor(Math.random() * items.length)];
 }
-
-const args = process.argv.slice(2);
-
-const argsInclude = (...items) => items.some(i => args.includes(i));
-
-if (argsInclude("source", "src", "s"))
-    console.log(`Source: ${pickRandomSource()}`);
-
-if (argsInclude("language", "lang", "l"))
-    console.log(`Language: ${pickRandomLanguage()}`);
