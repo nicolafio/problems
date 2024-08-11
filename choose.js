@@ -1,9 +1,13 @@
+// TODO: programmatically infer the tier.
+const BAEKJOON_MID_TIER = 1;
+const BAEKJOON_MAX_TIER = 30;
+
 main();
 
 function main() {
     if (argsInclude("source", "src", "s"))
         console.log(`Source: ${pickRandomSource()}`);
-    
+
     if (argsInclude("language", "lang", "l"))
         console.log(`Language: ${pickRandomLanguage()}`);
 }
@@ -20,32 +24,46 @@ function argsInclude(...items) {
 }
 
 function pickRandomSource() {
+    let difficulty = 'easy';
+
+    if (argsInclude('medium', 'm'))
+        difficulty = 'medium';
+
+    if (argsInclude('hard', 'h'))
+        difficulty = 'hard';
 
     // Use the Korean online judge.
 
-    if (Math.random < .6) {
-        return `https://www.acmicpc.net/problem/random/all`;
-    }
+    return (
+        'https://www.acmicpc.net/problemset' +
+        '?sort=random_asc' +
+        '&submit=pac%2Cfa%2Cus' +
+        `&tier=${pickRandomTierInBaekjoon(difficulty)}` +
+        '&lucky=1'
+    );
+}
 
-    // HackerRank
+function pickRandomTierInBaekjoon(difficulty) {
+    const ranges = {};
 
-    if (Math.random() < .8)
-        return 'https://www.hackerrank.com/interview/preparation-kits/three-month-preparation-kit/';
+    ranges.easy = {
+        min: 1,
+        max: Math.max(BAEKJOON_MID_TIER - 1, 1)
+    };
 
-    let difficulty = 'easy';
-    if (Math.random() < .6) {
-        difficulty = 'medium';
-        if (Math.random() < .2) {
-            difficulty = 'hard';
-        }
-    }
+    ranges.medium = {
+        min: BAEKJOON_MID_TIER,
+        max: Math.min(BAEKJOON_MID_TIER + 1, BAEKJOON_MAX_TIER)
+    };
 
-    let domain = 'algorithms';
-    if (Math.random() < .2) {
-        domain = 'data-structures';
-    }
+    ranges.hard = {
+        min: Math.min(ranges.medium.max + 1, BAEKJOON_MAX_TIER),
+        max: BAEKJOON_MAX_TIER
+    };
 
-    return `https://www.hackerrank.com/domains/${domain}?filters%5Bdifficulty%5D%5B%5D=${difficulty}`;
+    const {min, max} = ranges[difficulty];
+
+    return min + Math.floor(Math.random() * (max - min + 1));
 }
 
 function pickRandomLanguage() {
