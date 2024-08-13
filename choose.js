@@ -5,10 +5,12 @@ const BAEKJOON_MAX_TIER = 30;
 main();
 
 function main() {
-    if (argsInclude("source", "src", "s"))
+    let noArgs = process.argv.length == 2;
+
+    if (noArgs || argsInclude("source", "src", "s"))
         console.log(`Source: ${pickRandomSource()}`);
 
-    if (argsInclude("language", "lang", "l"))
+    if (noArgs || argsInclude("language", "lang", "l"))
         console.log(`Language: ${pickRandomLanguage()}`);
 }
 
@@ -24,7 +26,10 @@ function argsInclude(...items) {
 }
 
 function pickRandomSource() {
-    let difficulty = 'easy';
+    let difficulty = 'medium';
+
+    if (argsInclude('easy', 'e'))
+        difficulty = 'easy;'
 
     if (argsInclude('medium', 'm'))
         difficulty = 'medium';
