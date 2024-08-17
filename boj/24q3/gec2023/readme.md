@@ -1,0 +1,1 @@
+# [GEC Cup (2023)](https://www.acmicpc.net/category/detail/3562)
