@@ -43,6 +43,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "largest-substring-between-t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "check-if-a-word-occurs-as-a-prefix-of-any-word-in-sentence", "leetcode\24q3\check-if-a-word-occurs-as-a-prefix-of-any-word-in-sentence\check-if-a-word-occurs-as-a-prefix-of-any-word-in-sentence.csproj", "{CC137A03-439B-4F69-A8DA-074E5C75DF28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "boj", "boj", "{5CCB089B-4124-43F6-A049-44EC4366A715}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "24q3", "24q3", "{25238DAE-104D-4DED-A9C1-A382CD58AA5A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "baekjoon", "baekjoon", "{8121F18F-1D83-4762-9C74-7C7B3D3024E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "number-of-vowels", "boj\24q3\baekjoon\number-of-vowels\number-of-vowels.csproj", "{47FEAC1C-F3FF-4D71-89DF-D7961E8B4CD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +125,10 @@ Global
 		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC137A03-439B-4F69-A8DA-074E5C75DF28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47FEAC1C-F3FF-4D71-89DF-D7961E8B4CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FEAC1C-F3FF-4D71-89DF-D7961E8B4CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FEAC1C-F3FF-4D71-89DF-D7961E8B4CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FEAC1C-F3FF-4D71-89DF-D7961E8B4CD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,5 +152,8 @@ Global
 		{2E9D96B0-62C9-4992-A038-6894930F3527} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
 		{D605AE4A-5AFF-44E4-8C12-ECEC33AEF07C} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
 		{CC137A03-439B-4F69-A8DA-074E5C75DF28} = {2A4913FA-EC0A-4D4A-8BE9-B4E81361469D}
+		{25238DAE-104D-4DED-A9C1-A382CD58AA5A} = {5CCB089B-4124-43F6-A049-44EC4366A715}
+		{8121F18F-1D83-4762-9C74-7C7B3D3024E4} = {25238DAE-104D-4DED-A9C1-A382CD58AA5A}
+		{47FEAC1C-F3FF-4D71-89DF-D7961E8B4CD2} = {8121F18F-1D83-4762-9C74-7C7B3D3024E4}
 	EndGlobalSection
 EndGlobal
