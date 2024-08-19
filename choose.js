@@ -1,17 +1,33 @@
 const { resolve, parse } = require('path');
-const { readdirSync, readFileSync } = require('fs');
-const { spawnSync, execSync } = require('child_process');
+const { readdirSync, readFileSync, stat } = require('fs');
+const { spawnSync } = require('child_process');
+
+const FOLDERS_NOT_CONTAINING_BAEKJOON_PROBLEMS =
+    new Set(['.git', 'assets', 'hackerrank', 'leetcode']);
+
+const LANGUAGE_BY_EXTENSION = new Map([
+    ['.c', 'C'],
+    ['.cs', 'C#'],
+    ['.cc', 'C++'],
+    ['.cpp', 'C++'],
+    ['.js', 'JavaScript'],
+    ['.jsm', 'JavaScript'],
+    ['.ts', 'TypeScript'],
+    ['.py', 'Python'],
+    ['.go', 'Go'],
+    ['.rs', 'Rust'],
+    ['.java', 'Java'],
+    ['.scala', 'Scala'],
+]);
 
 // TODO: programmatically infer the tier.
 const BAEKJOON_MID_TIER = 1;
 const BAEKJOON_MAX_TIER = 30;
 
-main();
-
 function main() {
-    const problems = [...getBaekjoonProblems()];
+    const attempts = [...baekjoonProblemAttempts()];
 
-    console.log(JSON.stringify(problems, null, 4));
+    console.log(JSON.stringify(attempts, null, 4));
 
     let noArgs = process.argv.length == 2;
 
@@ -96,10 +112,7 @@ function pickRandomItem(items) {
     return items[Math.floor(Math.random() * items.length)];
 }
 
-const FOLDERS_NOT_CONTAINING_BAEKJOON_PROBLEMS =
-    new Set(['.git', 'assets', 'hackerrank', 'leetcode']);
-
-function* getBaekjoonProblems(dir = __dirname) {
+function* baekjoonProblemAttempts(dir = __dirname) {
     // https://stackoverflow.com/a/45130990
     
     const nodes = readdirSync(dir, { withFileTypes: true });
@@ -109,10 +122,10 @@ function* getBaekjoonProblems(dir = __dirname) {
         
         const path = resolve(dir, node.name);
         
-        if (isIgnoredByGit(path)) continue;
+        if (ignoredByGit(path)) continue;
 
         if (node.isDirectory()) {
-            yield* getBaekjoonProblems(path);
+            yield* baekjoonProblemAttempts(path);
             continue;
         }
 
@@ -130,64 +143,113 @@ function* getBaekjoonProblems(dir = __dirname) {
         const number = Number(match[3]);
         const url = `https://www.acmicpc.net/problem/${number}`;
 
-        yield {title, tier, number, dir, url};
-    }
-}
-
-function* getBaekjoonProblemTimes(problemDir) {
-    for (const solution of getBaekjoonProblemSolutionFiles(problemDir)) {
-        const path = solution.path;
-        const gitArgs = ['log', '--follow', '--pretty=format:%ad%n%s', path];
-        const result = spawnSync('git', gitArgs, { encoding: 'utf-8' });
-
-        if (result.status !== 0) console.error(result.stderr);
-
-        const log = result.stdout.split('\n');
-        let solveDate = null;
-        let fetchDate = null;
-
-        for (let i = 0; i < log.length; i += 2) {
-            const date = new Date(log[i]);
-            const subject = log[i + 1];
-    
-            if (fetchDate === null) fetchDate = date;
-    
-            if (solveDate === null && /^\s*solve\s*$/i.test(subject)) {
-                solveDate 
-            }
-            
+        for (const attempt of attempts(dir)) {
+            yield { ...attempt, title, tier, number, dir, url };
         }
     }
 }
 
-function* getBaekjoonProblemSolutionFiles(problemDir) {
+const attempts = memoizedUnaryGenerator(function* (problemDir) {
     const nodes = readdirSync(problemDir, { withFileTypes: true });
 
     for (const node of nodes) {
         const path = resolve(problemDir, node.name);
 
         if (!node.isFile()) continue;
-        if (isIgnoredByGit(path)) continue;
+        if (ignoredByGit(path)) continue;
 
-        const { base, name, ext } = parse(path);
+        const { name, ext } = parse(path);
 
-        if (base.toLowerCase() !== 'solve') continue;
+        if (name.toLowerCase() !== 'solution') continue;
 
-        yield { path, base, name, ext };
+        const language = LANGUAGE_BY_EXTENSION.get(ext);
+
+        if (!language) continue;
+        
+        let solveDate = null;
+        let timeTakenToSolveMinutes = null;
+        let fetchDate = creationTime(path);
+
+        for (const {date, subject} of gitLogFollow(path)) {
+            if (solveDate === null && /^\s*solve\s*$/i.test(subject)) {
+                solveDate = date;
+            }
+        }
+
+        if (fetchDate === solveDate) {
+            fetchDate = creationTime(problemDir);
+        }
+
+        if (solveDate != null) {
+            const timeTakenToSolveMilliseconds = solveDate - fetchDate;
+            timeTakenToSolveMinutes = Math.ceil(timeTakenToSolveMilliseconds / 1000 / 60);
+        }
+
+        yield {path, language, fetchDate, solveDate, timeTakenToSolveMinutes};
+    }
+});
+
+const creationTime = memoizedUnary(function (path) {
+    let result = null;
+    for (const { date } of gitLogFollow(path)) {
+        if (result === null) result = date;
+        if (date < result) result = date;
+    }
+    return result;
+});
+
+
+const gitLogFollow = memoizedUnaryGenerator(function* (path) {
+    const { stderr, stdout, status } = git('log', '--follow', '--pretty=format:%ad%n%s', path);
+
+    if (status !== 0) {
+        console.error(stderr);
+        return;
+    }
+
+    const lines = stdout.split('\n');
+
+    for (let i = 0; i < lines.length; i += 2) {
+        const date = new Date(lines[i]);
+        const subject = lines[i + 1];
+
+        yield { date, subject };
+    }
+});
+
+const ignoredByGit = memoizedUnary(function(path) {
+    // https://git-scm.com/docs/git-check-ignore
+
+    const { status } = git('check-ignore', '--quiet', path);
+
+    return status === 0;
+});
+
+function git(...args) {
+    return spawnSync('git', args, { cwd: __dirname, encoding: 'utf-8' });
+}
+
+function memoizedUnaryGenerator(gen) {
+    const memo = new Map();
+    return function* (arg) {
+        if (memo.has(arg)) {
+            yield* memo.get(arg);
+            return;
+        }
+        const res = [...gen(arg)];
+        memo.set(arg, res);
+        yield* res;
     }
 }
 
-const isIgnoredByGit = (function () {
+function memoizedUnary(fn) {
     const memo = new Map();
+    return function (arg) {
+        if (memo.has(arg)) return memo.get(arg);
+        const res = fn(arg);
+        memo.set(arg, res);
+        return res;
+    }
+}
 
-    return function isIgnoredByGit(path) {
-        if (memo.has(path)) return memo.get(path);
-
-        // https://git-scm.com/docs/git-check-ignore
-
-        const args = ['check-ignore', '--quiet', '--stdin'];
-        const result = spawnSync('git', args, { cwd: path, input: path });
-
-        return result.status === 0;
-    };
-})();
+main();
