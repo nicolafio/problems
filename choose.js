@@ -264,7 +264,7 @@ const baekjoonMidTiersByLanguage = memoizedUnary(function(timeCutoff = new Date(
         let mid = 1;
         for (const tier of baekjoonTiers(timeCutoff)) {
             if (tier.language === language && tier.easy) {
-                mid = Max(tier.tier + 1, mid);
+                mid = Math.max(tier.tier + 1, mid);
             }
         }
         for (const tier of baekjoonTiers(timeCutoff)) {
@@ -311,7 +311,7 @@ const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date())
                 progress = solvedWithinLimit / BAEKJOON_ATTEMPTS_TO_EASY_TIER;
 
                 if (solvedWithinLimit >= BAEKJOON_ATTEMPTS_TO_EASY_TIER) {
-                    esay = true;
+                    easy = true;
                 }
             }
 
