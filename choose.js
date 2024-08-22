@@ -95,7 +95,7 @@ async function printBaekjoonLevelProgress() {
         const tierDelta = s.tier - tier;
         let exp = Math.floor(
             expByTier.get(s.tier) *
-            (1.20 ** tierDelta) *
+            (tierDelta < 0 ? (1.20 ** tierDelta) : 1) *
             (1.10 ** (tier - 1))
         );
 
