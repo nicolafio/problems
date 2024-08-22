@@ -1,2 +1,2 @@
-# ![](../../../../assets/24q3/tier/0.svg) [Fruit](https://www.acmicpc.net/problem/31606)
+# ![](../../../../assets/24q3/tier/1.svg) [Fruit](https://www.acmicpc.net/problem/31606)
 
