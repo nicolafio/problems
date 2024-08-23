@@ -22,8 +22,9 @@ const LANGUAGE_BY_EXTENSION = new Map([
 
 const LANGUAGES = new Set(LANGUAGE_BY_EXTENSION.values());
 const BAEKJOON_MAX_TIER = 30;
-const BAEKJOON_ATTEMPTS_TO_EASY_TIER = 7;
-const BAEKJOON_MINUTES_TO_EASY_TIER = 15;
+const BAEKJOON_ATTEMPTS_TO_TIER_MASTERY = 5;
+const BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY = 10;
+const BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY = 2;
 
 function main() {
     if (argsInclude('info')) {
@@ -51,7 +52,7 @@ function printBaekjoonTierProgress(language) {
 
     let checkBoxes = '';
 
-    for (let i = 0; i < BAEKJOON_ATTEMPTS_TO_EASY_TIER; i++) {
+    for (let i = 0; i < BAEKJOON_ATTEMPTS_TO_TIER_MASTERY; i++) {
         if (i < solvedWithinLimit) checkBoxes += '● ';
         else checkBoxes += '○ ';
     }
@@ -263,7 +264,7 @@ const baekjoonMidTiersByLanguage = memoizedUnary(function(timeCutoff = new Date(
     for (const language of LANGUAGES) {
         let mid = 1;
         for (const tier of baekjoonTiers(timeCutoff)) {
-            if (tier.language === language && tier.easy) {
+            if (tier.language === language && tier.mastered) {
                 mid = Math.max(tier.tier + 1, mid);
             }
         }
@@ -286,7 +287,7 @@ const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date())
     for (const language of LANGUAGES) {
         const attemptsWithLanguage = allAttempts.filter(a => a.language === language);
 
-        for (let tier = BAEKJOON_MAX_TIER, easy = false; tier >= 1; tier--) {
+        for (let tier = BAEKJOON_MAX_TIER, mastered = false; tier >= 1; tier--) {
             const attempts = attemptsWithLanguage.filter(a => a.tier == tier);
             let progress = 0;
             let solvedWithinLimit = 0;
@@ -299,7 +300,7 @@ const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date())
 
                     total++;
 
-                    if (total > BAEKJOON_ATTEMPTS_TO_EASY_TIER) break;
+                    if (total > BAEKJOON_ATTEMPTS_TO_TIER_MASTERY) break;
                     if (attempt.solvedWithinLimit) count++;
                 }
                 if (count > solvedWithinLimit) {
@@ -307,22 +308,22 @@ const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date())
                 }
             }
 
-            if (!easy) {
-                progress = solvedWithinLimit / BAEKJOON_ATTEMPTS_TO_EASY_TIER;
+            if (!mastered) {
+                progress = solvedWithinLimit / BAEKJOON_ATTEMPTS_TO_TIER_MASTERY;
 
-                if (solvedWithinLimit >= BAEKJOON_ATTEMPTS_TO_EASY_TIER) {
-                    easy = true;
+                if (solvedWithinLimit >= BAEKJOON_ATTEMPTS_TO_TIER_MASTERY) {
+                    mastered = true;
                 }
             }
 
-            if (easy) {
+            if (mastered) {
                 progress = 1;
             }
 
             yield {
                 tier,
                 language,
-                easy,
+                mastered,
                 progress,
                 solvedWithinLimit,
                 attempts
@@ -362,10 +363,36 @@ const baekjoonProblemAttempts = lazyGenerator(function* () {
             const number = Number(match[3]);
             const url = `https://www.acmicpc.net/problem/${number}`;
 
+            let minutesPerAttemptToMastery =
+                BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY;
+
+            if (tier > 1) {
+                const extraMinutes =
+                    (tier - 1) * BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY
+                minutesPerAttemptToMastery += extraMinutes;
+            }
+
             for (const attempt of attempts(dir)) {
                 if (!attemptsYieled.has(attempt.path)) {
                     attemptsYieled.add(attempt.path);
-                    yield { ...attempt, title, tier, number, dir, url };
+
+                    let solvedWithinLimit = false;
+
+                    if (attempt.solveDate != null) {
+                        solvedWithinLimit =
+                            attempt.timeTakenToSolveMinutes <=
+                            minutesPerAttemptToMastery;
+                    }
+
+                    yield {
+                        ...attempt,
+                        title,
+                        tier,
+                        number,
+                        dir,
+                        url,
+                        solvedWithinLimit
+                    };
                 }
             }
         }
@@ -393,7 +420,6 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
         let solveDate = null;
         let timeTakenToSolveMinutes = null;
         let fetchDate = null;
-        let solvedWithinLimit = false;
         const log = [...gitLogFollow(path)];
 
         for (const {date, subject} of log) {
@@ -421,7 +447,6 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
         if (solveDate != null) {
             const timeTakenToSolveMilliseconds = solveDate - fetchDate;
             timeTakenToSolveMinutes = Math.ceil(timeTakenToSolveMilliseconds / 1000 / 60);
-            solvedWithinLimit = timeTakenToSolveMinutes <= BAEKJOON_MINUTES_TO_EASY_TIER;
         }
 
         yield {
@@ -430,7 +455,6 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
             fetchDate,
             solveDate,
             timeTakenToSolveMinutes,
-            solvedWithinLimit,
             log
         };
     }
