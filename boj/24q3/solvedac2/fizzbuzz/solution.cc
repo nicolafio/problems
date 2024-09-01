@@ -3,42 +3,50 @@
 
 using namespace std;
 
+bool isInteger(string str) {
+    try {
+        stoul(str);
+    }
+    catch (invalid_argument& _) {
+        return false;
+    }
+
+    return true;
+}
+
 int main() {
     string line1;
     string line2;
     string line3;
-    string last = "";
-    string secondLast = "";
-    string thirdLast = "";
 
     cin >> line1 >> line2 >> line3;
 
-    for (unsigned long int i = 1; i <= 100000000; i++) {
-        string current = "";
+    unsigned long i;
 
-        bool multipleOf5 = i % 5 == 0;
-        bool multipleOf3 = i % 3 == 0;
-        
-        if (multipleOf3 && multipleOf5)
-            current = "FizzBuzz";
-        
-        if (multipleOf3 && !multipleOf5)
-            current = "Fizz";
-        
-        if (!multipleOf3 && multipleOf5)
-            current = "Buzz";
-        
-        if (!multipleOf3 && !multipleOf5)
-            current = to_string(i);
-
-        if (thirdLast == line1 &&
-            secondLast == line2 &&
-            last == line3) {
-                cout << current << endl;
-            }
-
-        thirdLast = secondLast;
-        secondLast = last;
-        last = current;
+    if (isInteger(line1)) {
+        i = stoul(line1) + 3;
     }
+    else if (isInteger(line2)) {
+        i = stoul(line2) + 2;
+    }
+    else {
+        i = stoul(line3) + 1;
+    }
+
+    bool multipleOf5 = i % 5 == 0;
+    bool multipleOf3 = i % 3 == 0;
+    
+    if (multipleOf3 && multipleOf5)
+        cout << "FizzBuzz";
+    
+    if (multipleOf3 && !multipleOf5)
+        cout << "Fizz";
+    
+    if (!multipleOf3 && multipleOf5)
+        cout << "Buzz";
+    
+    if (!multipleOf3 && !multipleOf5)
+        cout << to_string(i);
+
+    cout << endl;
 }
