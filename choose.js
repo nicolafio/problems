@@ -37,18 +37,31 @@ function main() {
         return;
     }
 
-    const language = pickRandomLanguage();
+    let language = null;
+    
+    for (const [e, l] of LANGUAGE_BY_EXTENSION) {
+        if (argsInclude(e, e.substring(1), l, l.toLowerCase())) {
+            language = l;
+            break;
+        }
+    }
+
+    if (!language) {
+        language = pickRandomLanguage();
+    }
+
     const source = pickRandomSource(language)
 
     console.log(`Source: ${source}`);
     console.log(`Language: ${language}`);
 
-    printBaekjoonTierProgress(language);
     printBaekjoonLevelProgress().catch(console.error);
 }
 
-function printBaekjoonTierProgress(language) {
-    const {tier, solvedWithinLimit} = baekjoonMidTier(language);
+function printBaekjoonTierProgress(language, timeCutoff) {
+    const {tier, solvedWithinLimit} = baekjoonMidTier(language, timeCutoff);
+
+    console.log('★'.repeat(tier));
 
     let checkBoxes = '';
 
@@ -57,7 +70,7 @@ function printBaekjoonTierProgress(language) {
         else checkBoxes += '○ ';
     }
 
-    console.log(`You are at tier ${tier} ${checkBoxes}`)
+    console.log(`You are at tier ${tier}`)
     
 }
 
@@ -85,15 +98,18 @@ async function printBaekjoonLevelProgress() {
     let levelExp = baseLevelExp;
     let expToNextLevel = baseLevelExp;
     let solvedCount = 0;
+    let linesToPrint = 7;
 
-    printProgressASCIIArt(0, `Lv.1`);
-    console.log('You solved:       0 problems');
+    for (let i = 0; i < linesToPrint; i++) {
+        console.log("");
+    }
 
     for (const s of solved) {
         solvedCount++;
 
         const {tier} = baekjoonMidTier(s.language, s.solveDate);
         const tierDelta = s.tier - tier;
+
         let exp = Math.floor(
             expByTier.get(s.tier) *
             (tierDelta < 0 ? (1.20 ** tierDelta) : 1) *
@@ -115,16 +131,19 @@ async function printBaekjoonLevelProgress() {
                 levelExp = nextLevelExp(levelExp);
                 expToNextLevel += levelExp; 
             }
-        
-            process.stdout.moveCursor(0, -1);
-            process.stdout.clearLine(1);
-    
-            process.stdout.moveCursor(0, -1);
-            process.stdout.clearLine(1);
+
+            for (let i = 0; i < linesToPrint; i++) {
+                process.stdout.moveCursor(0, -1);
+                process.stdout.clearLine(1);
+            }
     
             const progress = (levelExp - expToNextLevel) / levelExp;
             printProgressASCIIArt(progress, `Lv.${level}`);
-            console.log(`You solved: ${String(solvedCount).padStart(6)} problems (last: ${s.title})`);
+            printBaekjoonTierProgress(s.language, s.solveDate);
+            console.log(`You solved: ${String(solvedCount)} problems`);
+            console.log(`Last problem: ${s.title}`);
+            console.log(`Last problem language: ${s.language}`);
+            console.log(`Last problem tier: ${s.tier}`);
         }
     }
 }
@@ -209,7 +228,8 @@ function pickRandomSource(language) {
         '?sort=random_asc' +
         '&submit=pac%2Cfa%2Cus' +
         `&tier=${pickRandomTierInBaekjoon(difficulty, language)}` +
-        '&lucky=1'
+        '&lucky=1' +
+        '&english=1'
     );
 }
 
@@ -353,22 +373,18 @@ const baekjoonProblemAttempts = lazyGenerator(function* () {
             if (node.name.toLowerCase() !== 'readme.md') continue;
 
             const markdown = readFileSync(path, { encoding: 'utf-8' });
+            let problem = parseBaekjoonProblemDetailsFromReadme(markdown);
 
-            const match = markdown.match(/\#\s+\!\[[^\]]*\]\(.*\/tier\/([0-9]+)\.svg\)\s+\[([^\]]+)\]\(https:\/\/www\.acmicpc\.net\/problem\/([0-9]+)/)
+            if (!problem) continue;
 
-            if (!match) continue;
-
-            const tier = Number(match[1]);
-            const title = match[2];
-            const number = Number(match[3]);
-            const url = `https://www.acmicpc.net/problem/${number}`;
+            problem = {...problem, dir};
 
             let minutesPerAttemptToMastery =
                 BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY;
 
-            if (tier > 1) {
+            if (problem.tier > 1) {
                 const extraMinutes =
-                    (tier - 1) * BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY
+                    (problem.tier - 1) * BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY
                 minutesPerAttemptToMastery += extraMinutes;
             }
 
@@ -385,12 +401,8 @@ const baekjoonProblemAttempts = lazyGenerator(function* () {
                     }
 
                     yield {
+                        ...problem,
                         ...attempt,
-                        title,
-                        tier,
-                        number,
-                        dir,
-                        url,
                         solvedWithinLimit
                     };
                 }
@@ -398,6 +410,34 @@ const baekjoonProblemAttempts = lazyGenerator(function* () {
         }
     })();
 });
+
+
+function parseBaekjoonProblemDetailsFromReadme(markdown) {
+    const recognizedPatterns = [
+        /\#\s+\!\[[^\]]*\]\(.*\/tier\/([0-9]+)\.svg\)\s+\[([^\]]+)\]\(https:\/\/www\.acmicpc\.net\/problem\/([0-9]+)/,
+        /\#\s+\[\s*\!\[[^\]]*\]\(.*\/tier\/([0-9]+)\.svg\)\s*\]\(https:\/\/solved\.ac\/contribute\/[0-9]+\)\s+\[([^\]]+)\]\(https:\/\/www\.acmicpc\.net\/problem\/([0-9]+)/,
+    ];
+    
+    for (const pattern of recognizedPatterns) {
+        const match = markdown.match(pattern);
+
+        if (match) {
+            const tier = Number(match[1]);
+            const title = match[2];
+            const number = Number(match[3]);
+            const url = `https://www.acmicpc.net/problem/${number}`;
+
+            return {
+                tier,
+                title,
+                number,
+                url
+            }
+        }
+    }
+
+    return null;
+}
 
 const attempts = memoizedUnaryGenerator(function* (problemDir) {
     const nodes = readdirSync(problemDir, { withFileTypes: true });
