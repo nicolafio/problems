@@ -63,6 +63,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solvedac2", "solvedac2", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sum-of-cubes", "boj\24q3\solvedac2\sum-of-cubes\sum-of-cubes.csproj", "{8FD7616E-FBD7-45D6-9D87-58C8F07427A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "double-it", "boj\24q3\solvedac2\double-it\double-it.csproj", "{254976D8-3044-4941-9492-A8E796C62F59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,10 @@ Global
 		{8FD7616E-FBD7-45D6-9D87-58C8F07427A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FD7616E-FBD7-45D6-9D87-58C8F07427A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FD7616E-FBD7-45D6-9D87-58C8F07427A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{254976D8-3044-4941-9492-A8E796C62F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{254976D8-3044-4941-9492-A8E796C62F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{254976D8-3044-4941-9492-A8E796C62F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{254976D8-3044-4941-9492-A8E796C62F59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,5 +190,6 @@ Global
 		{3DB18D1B-6764-4B82-B9C2-0892068E53F7} = {B14D8A5D-EFCD-4E59-A00B-761612597231}
 		{40EBA645-B007-4A71-A3D0-3747CE00674C} = {25238DAE-104D-4DED-A9C1-A382CD58AA5A}
 		{8FD7616E-FBD7-45D6-9D87-58C8F07427A0} = {40EBA645-B007-4A71-A3D0-3747CE00674C}
+		{254976D8-3044-4941-9492-A8E796C62F59} = {40EBA645-B007-4A71-A3D0-3747CE00674C}
 	EndGlobalSection
 EndGlobal
