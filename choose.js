@@ -27,6 +27,11 @@ const BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY = 10;
 const BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY = 2;
 
 function main() {
+    const requestedLanguage = argsInclude('l', 'lang', 'language');
+    const requestedSource = argsInclude('s', 'src', 'source');
+    const printLanguage = requestedLanguage || !requestedSource;
+    const printSource = requestedSource || !requestedLanguage;
+
     if (argsInclude('info')) {
         console.log(
             JSON.stringify({
@@ -50,10 +55,11 @@ function main() {
         language = pickRandomLanguage();
     }
 
-    const source = pickRandomSource(language)
+    if (printSource)
+        console.log(`Source: ${pickRandomSource(language)}`);
 
-    console.log(`Source: ${source}`);
-    console.log(`Language: ${language}`);
+    if (printLanguage)
+        console.log(`Language: ${language}`);
 
     printBaekjoonLevelProgress().catch(console.error);
 }
