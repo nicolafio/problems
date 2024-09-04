@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
 csproj_file=$(ls | grep -E "\.csproj$" | head -n 1)
 
@@ -14,7 +14,8 @@ binary_name=$(basename "$csproj_file" .csproj)
 
 dotnet publish \
     --configuration Release \
-    --self-contained true
+    --self-contained true \
+    --verbosity quiet
 
-./bin/Release/net6.0/linux-x64/publish/$binary_name
+cat input.txt | ./bin/Release/net6.0/linux-x64/publish/$binary_name
 
