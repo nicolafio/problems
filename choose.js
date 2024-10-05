@@ -43,7 +43,7 @@ function main() {
     }
 
     let language = null;
-    
+
     for (const [e, l] of LANGUAGE_BY_EXTENSION) {
         if (argsInclude(e, e.substring(1), l, l.toLowerCase())) {
             language = l;
@@ -77,7 +77,7 @@ function printBaekjoonTierProgress(language, timeCutoff) {
     }
 
     console.log(`You are at tier ${tier}`)
-    
+
 }
 
 async function printBaekjoonLevelProgress() {
@@ -126,7 +126,7 @@ async function printBaekjoonLevelProgress() {
             await new Promise(res => setTimeout(res, 16));
 
             let gain = Math.ceil((baseLevelExp / 30) ** (1.4 ** (level - 1)));
-        
+
             if (gain > exp) gain = exp;
 
             exp -= gain;
@@ -135,14 +135,14 @@ async function printBaekjoonLevelProgress() {
             while (expToNextLevel < 0) {
                 level++;
                 levelExp = nextLevelExp(levelExp);
-                expToNextLevel += levelExp; 
+                expToNextLevel += levelExp;
             }
 
             for (let i = 0; i < linesToPrint; i++) {
                 process.stdout.moveCursor(0, -1);
                 process.stdout.clearLine(1);
             }
-    
+
             const progress = (levelExp - expToNextLevel) / levelExp;
             printProgressASCIIArt(progress, `Lv.${level}`);
             printBaekjoonTierProgress(s.language, s.solveDate);
@@ -268,7 +268,6 @@ function pickRandomLanguage() {
     if (Math.random() < .6) return 'C#';
     if (Math.random() < .6) return 'Python';
     if (Math.random() < .6) return 'C';
-    if (Math.random() < .6) return 'Scala';
     if (Math.random() < .6) return 'Java';
     if (Math.random() < .6) return 'Rust';
     if (Math.random() < .6) return 'Go';
@@ -423,7 +422,7 @@ function parseBaekjoonProblemDetailsFromReadme(markdown) {
         /\#\s+\!\[[^\]]*\]\(.*\/tier\/([0-9]+)\.svg\)\s+\[([^\]]+)\]\(https:\/\/www\.acmicpc\.net\/problem\/([0-9]+)/,
         /\#\s+\[\s*\!\[[^\]]*\]\(.*\/tier\/([0-9]+)\.svg\)\s*\]\(https:\/\/solved\.ac\/contribute\/[0-9]+\)\s+\[([^\]]+)\]\(https:\/\/www\.acmicpc\.net\/problem\/([0-9]+)/,
     ];
-    
+
     for (const pattern of recognizedPatterns) {
         const match = markdown.match(pattern);
 
