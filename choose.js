@@ -76,7 +76,7 @@ function printBaekjoonTierProgress(language, timeCutoff) {
         else checkBoxes += '○ ';
     }
 
-    console.log(`You are at tier ${tier}`)
+    console.log(`For ${language} you are at tier ${tier}`)
 
 }
 
