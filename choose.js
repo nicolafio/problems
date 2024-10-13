@@ -275,10 +275,6 @@ function pickRandomLanguage() {
     return 'JavaScript';
 }
 
-function pickRandomItem(items) {
-    return items[Math.floor(Math.random() * items.length)];
-}
-
 const baekjoonMidTier = function (language, timeCutoff = new Date()) {
     return baekjoonMidTiersByLanguage(timeCutoff)[language];
 }
