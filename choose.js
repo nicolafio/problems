@@ -104,54 +104,52 @@ async function printBaekjoonLevelProgress() {
     let levelExp = baseLevelExp;
     let expToNextLevel = baseLevelExp;
     let solvedCount = 0;
-    let linesToPrint = 7;
+    let attempt;
+    let foundAttemptWithoutTierClassification = false;
 
-    for (let i = 0; i < linesToPrint; i++) {
-        console.log("");
-    }
-
-    for (const s of solved) {
+    for (attempt of solved) {
         solvedCount++;
 
-        const {tier} = baekjoonMidTier(s.language, s.solveDate);
-        const tierDelta = s.tier - tier;
+        const {tier} = baekjoonMidTier(attempt.language, attempt.solveDate);
+
+        if (attempt.tier === 0 || isNaN(attempt.tier)) {
+            if (!foundAttemptWithoutTierClassification) {
+                console.log();
+                console.log('No tier classification for:');
+                foundAttemptWithoutTierClassification = true;
+            }
+            console.log(`* ${attempt.title} - ${attempt.path}`);
+            continue;
+        }
+
+        const tierDelta = attempt.tier - tier;
 
         let exp = Math.floor(
-            expByTier.get(s.tier) *
+            expByTier.get(attempt.tier) *
             (tierDelta < 0 ? (1.20 ** tierDelta) : 1) *
             (1.10 ** (tier - 1))
         );
 
-        while (exp > 0) {
-            await new Promise(res => setTimeout(res, 16));
+        expToNextLevel -= exp;
 
-            let gain = Math.ceil((baseLevelExp / 30) ** (1.4 ** (level - 1)));
-
-            if (gain > exp) gain = exp;
-
-            exp -= gain;
-            expToNextLevel -= gain;
-
-            while (expToNextLevel < 0) {
-                level++;
-                levelExp = nextLevelExp(levelExp);
-                expToNextLevel += levelExp;
-            }
-
-            for (let i = 0; i < linesToPrint; i++) {
-                process.stdout.moveCursor(0, -1);
-                process.stdout.clearLine(1);
-            }
-
-            const progress = (levelExp - expToNextLevel) / levelExp;
-            printProgressASCIIArt(progress, `Lv.${level}`);
-            printBaekjoonTierProgress(s.language, s.solveDate);
-            console.log(`You solved: ${String(solvedCount)} problems`);
-            console.log(`Last problem: ${s.title}`);
-            console.log(`Last problem language: ${s.language}`);
-            console.log(`Last problem tier: ${s.tier}`);
+        while (expToNextLevel < 0) {
+            level++;
+            levelExp = nextLevelExp(levelExp);
+            expToNextLevel += levelExp;
         }
     }
+
+    if (foundAttemptWithoutTierClassification) {
+        console.log();
+    }
+
+    const progress = (levelExp - expToNextLevel) / levelExp;
+    printProgressASCIIArt(progress, `Lv.${level}`);
+    printBaekjoonTierProgress(attempt.language, attempt.solveDate);
+    process.stdout.write(`You solved: ${String(solvedCount)} problems\n`);
+    process.stdout.write(`Last attempt: ${attempt.title}\n`);
+    process.stdout.write(`Last attempt language: ${attempt.language}\n`);
+    process.stdout.write(`Last attempt tier: ${attempt.tier}\n`);
 }
 
 function printProgressASCIIArt(progress, label) {
