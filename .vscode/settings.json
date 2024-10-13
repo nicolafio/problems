@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "unordered_map": "cpp"
     },
     "dotnet.defaultSolution": "ads.sln",
     "github.copilot.enable": {
