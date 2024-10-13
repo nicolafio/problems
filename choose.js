@@ -262,12 +262,12 @@ function pickRandomTierInBaekjoon(difficulty, language) {
 }
 
 function pickRandomLanguage() {
+    if (Math.random() < .4) return 'C';
     if (Math.random() < .6) return 'C++';
-    if (Math.random() < .6) return 'C#';
     if (Math.random() < .6) return 'Python';
-    if (Math.random() < .6) return 'C';
-    if (Math.random() < .6) return 'Java';
     if (Math.random() < .6) return 'Rust';
+    if (Math.random() < .6) return 'C#';
+    if (Math.random() < .6) return 'Java';
     if (Math.random() < .6) return 'Go';
     if (Math.random() < .6) return 'TypeScript';
     return 'JavaScript';
