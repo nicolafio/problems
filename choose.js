@@ -22,8 +22,8 @@ const LANGUAGE_BY_EXTENSION = new Map([
 
 const LANGUAGES = new Set(LANGUAGE_BY_EXTENSION.values());
 const BAEKJOON_MAX_TIER = 30;
-const BAEKJOON_ATTEMPTS_TO_TIER_MASTERY = 5;
-const BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY = 10;
+const BAEKJOON_ATTEMPTS_TO_TIER_MASTERY = 1;
+const BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY = 20;
 const BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY = 2;
 
 function main() {
@@ -214,13 +214,16 @@ function argsInclude(...items) {
 }
 
 function pickRandomSource(language) {
-    let difficulty = 'medium';
+    let difficulty = 'edge';
 
     if (argsInclude('easy', 'e'))
         difficulty = 'easy;'
 
     if (argsInclude('medium', 'm'))
         difficulty = 'medium';
+
+    if (argsInclude('edge', 'e'))
+        difficulty = 'edge';
 
     if (argsInclude('hard', 'h'))
         difficulty = 'hard';
@@ -248,11 +251,16 @@ function pickRandomTierInBaekjoon(difficulty, language) {
 
     ranges.medium = {
         min: midTier,
-        max: Math.min(midTier + 1, BAEKJOON_MAX_TIER)
+        max: Math.min(midTier + 2, BAEKJOON_MAX_TIER)
+    };
+
+    ranges.edge = {
+        min: Math.min(ranges.medium.max + 1, BAEKJOON_MAX_TIER),
+        max: Math.min(ranges.medium.max + 3, BAEKJOON_MAX_TIER)
     };
 
     ranges.hard = {
-        min: Math.min(ranges.medium.max + 1, BAEKJOON_MAX_TIER),
+        min: Math.min(ranges.edge.max + 1, BAEKJOON_MAX_TIER),
         max: BAEKJOON_MAX_TIER
     };
 
