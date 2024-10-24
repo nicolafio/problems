@@ -29,24 +29,30 @@ int runCase() {
     }
 
     for (int discarded = 1; discarded <= k; discarded++) {
-        int max = 0, worstTheory = -1;
+        int max = 0, bestCandidate = -1;
         for (int i = 0; i < n; i++) {
-            if (contradictions[i].size() > max) {
-                max = contradictions[i].size();
-                worstTheory = i;
+            if (contradictions[i].size() == 0) continue;
+            int j = 1;
+            for (int k : contradictions[i]) {
+                if (contradictions[k].size() == 1) {
+                    j++;
+                }
+            }
+            if (j > max) {
+                bestCandidate = i;
             }
         }
 
-        if (worstTheory == -1) {
+        if (bestCandidate == -1) {
             cerr << "Unexpected state" << endl;
             return 1;
         }
 
-        for (int j : contradictions[worstTheory]) {
-            contradictions[j].erase(worstTheory);
+        for (int j : contradictions[bestCandidate]) {
+            contradictions[j].erase(bestCandidate);
         }
 
-        contradictions[worstTheory].clear();
+        contradictions[bestCandidate].clear();
 
         bool valid = true;
 
