@@ -61,7 +61,7 @@ function main() {
     if (printLanguage)
         console.log(`Language: ${language}`);
 
-    printBaekjoonLevelProgress().catch(console.error);
+    printBaekjoonLevelProgress(language).catch(console.error);
 }
 
 function printBaekjoonTierProgress(language, timeCutoff) {
@@ -80,7 +80,7 @@ function printBaekjoonTierProgress(language, timeCutoff) {
 
 }
 
-async function printBaekjoonLevelProgress() {
+async function printBaekjoonLevelProgress(language) {
     const solved = [...baekjoonProblemAttempts()]
         .filter(a => a.solveDate)
         .sort((a, b) => a.solveDate - b.solveDate);
@@ -145,6 +145,7 @@ async function printBaekjoonLevelProgress() {
 
     const progress = (levelExp - expToNextLevel) / levelExp;
     printProgressASCIIArt(progress, `Lv.${level}`);
+    printBaekjoonTierProgress(language, Date.now());
     printBaekjoonTierProgress(attempt.language, attempt.solveDate);
     process.stdout.write(`You solved: ${String(solvedCount)} problems\n`);
     process.stdout.write(`Last attempt: ${attempt.title}\n`);
@@ -468,10 +469,11 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
         let timeTakenToSolveMinutes = null;
         let fetchDate = null;
         const log = [...gitLogFollow(path)];
+        let candidateSolution = null;
 
-        for (const {date, subject} of log) {
-            if (/^\s*solve\s*$/i.test(subject)) {
-                solveDate = date;
+        for (const entry of log) {
+            if (/^\s*solve\s*$/i.test(entry.subject)) {
+                candidateSolution = entry;
                 break;
             }
         }
@@ -489,6 +491,10 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
 
         if (fetchDate === solveDate) {
             fetchDate = creationTime(problemDir);
+        }
+
+        if (candidateSolution != null && fetchDate < candidateSolution.date) {
+            solveDate = candidateSolution.date;
         }
 
         if (solveDate != null) {
