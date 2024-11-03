@@ -156,6 +156,7 @@ async function printBaekjoonLevelProgress(language) {
     process.stdout.write(`${'Language'.padStart(10, ' ')}: ${attempt.language}\n`)
     process.stdout.write(`${'Tier'.padStart(10, ' ')}: ${attempt.tier}\n`);
     process.stdout.write(`${'Time'.padStart(10, ' ')}: ${attempt.timeTakenToSolveMinutes} minutes\n`);
+    process.stdout.write(`${'Location'.padStart(10, ' ')}: ${attempt.path}\n`);
 }
 
 function printProgressASCIIArt(progress, label) {
