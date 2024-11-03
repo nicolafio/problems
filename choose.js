@@ -146,11 +146,16 @@ async function printBaekjoonLevelProgress(language) {
     const progress = (levelExp - expToNextLevel) / levelExp;
     printProgressASCIIArt(progress, `Lv.${level}`);
     printBaekjoonTierProgress(language, Date.now());
-    printBaekjoonTierProgress(attempt.language, attempt.solveDate);
+
+    if (language != attempt.language)
+        printBaekjoonTierProgress(attempt.language, attempt.solveDate);
+
     process.stdout.write(`You solved: ${String(solvedCount)} problems\n`);
-    process.stdout.write(`Last attempt: ${attempt.title}\n`);
-    process.stdout.write(`Last attempt language: ${attempt.language}\n`);
-    process.stdout.write(`Last attempt tier: ${attempt.tier}\n`);
+    process.stdout.write(`Last attempt: \n`);
+    process.stdout.write(`${'Title'.padStart(10, ' ')}: ${attempt.title}\n`)
+    process.stdout.write(`${'Language'.padStart(10, ' ')}: ${attempt.language}\n`)
+    process.stdout.write(`${'Tier'.padStart(10, ' ')}: ${attempt.tier}\n`);
+    process.stdout.write(`${'Time'.padStart(10, ' ')}: ${attempt.timeTakenToSolveMinutes} minutes\n`);
 }
 
 function printProgressASCIIArt(progress, label) {
