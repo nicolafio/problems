@@ -1,4 +1,3 @@
-// Wrong
 function countGoodStrings(low, high, zero, one) {
     let memo = new Map();
 
@@ -15,6 +14,6 @@ function countGoodStrings(low, high, zero, one) {
         if (start >= low) count++;
         count += _count(start + zero);
         count += _count(start + one);
-        return count;
+        return count % (10 ** 9 + 7);
     }
 }
