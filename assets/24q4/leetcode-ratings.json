@@ -1,0 +1,246 @@
+{
+    "0": {
+        "difficulty": "easy",
+        "maxAcceptance": 100
+    },
+    "50": {
+        "difficulty": "easy",
+        "maxAcceptance": 80.1526717557252
+    },
+    "100": {
+        "difficulty": "easy",
+        "maxAcceptance": 76.24564281320484
+    },
+    "150": {
+        "difficulty": "easy",
+        "maxAcceptance": 72.36467236467237
+    },
+    "200": {
+        "difficulty": "easy",
+        "maxAcceptance": 68.18181818181817
+    },
+    "250": {
+        "difficulty": "easy",
+        "maxAcceptance": 64.78358628442945
+    },
+    "300": {
+        "difficulty": "easy",
+        "maxAcceptance": 60.58981233243968
+    },
+    "350": {
+        "difficulty": "easy",
+        "maxAcceptance": 56.9
+    },
+    "400": {
+        "difficulty": "easy",
+        "maxAcceptance": 51.4792899408284
+    },
+    "450": {
+        "difficulty": "easy",
+        "maxAcceptance": 45.45454545454545
+    },
+    "500": {
+        "difficulty": "easy",
+        "maxAcceptance": 32.59166666666667
+    },
+    "550": {
+        "difficulty": "medium",
+        "maxAcceptance": 100
+    },
+    "600": {
+        "difficulty": "medium",
+        "maxAcceptance": 67.21311475409836
+    },
+    "650": {
+        "difficulty": "medium",
+        "maxAcceptance": 62.10769230769231
+    },
+    "700": {
+        "difficulty": "medium",
+        "maxAcceptance": 57.95454545454546
+    },
+    "750": {
+        "difficulty": "medium",
+        "maxAcceptance": 54.1
+    },
+    "800": {
+        "difficulty": "medium",
+        "maxAcceptance": 50.35498290823034
+    },
+    "850": {
+        "difficulty": "medium",
+        "maxAcceptance": 46.8
+    },
+    "900": {
+        "difficulty": "medium",
+        "maxAcceptance": 42.625169147496614
+    },
+    "950": {
+        "difficulty": "medium",
+        "maxAcceptance": 36.60508083140878
+    },
+    "1000": {
+        "difficulty": "medium",
+        "maxAcceptance": 23.567802755620015
+    },
+    "1050": {
+        "difficulty": "hard",
+        "maxAcceptance": 100
+    },
+    "1100": {
+        "difficulty": "hard",
+        "maxAcceptance": 66.47493837304847
+    },
+    "1150": {
+        "difficulty": "hard",
+        "maxAcceptance": 64.56692913385827
+    },
+    "1200": {
+        "difficulty": "hard",
+        "maxAcceptance": 62.7
+    },
+    "1250": {
+        "difficulty": "hard",
+        "maxAcceptance": 61.1
+    },
+    "1300": {
+        "difficulty": "hard",
+        "maxAcceptance": 60.2
+    },
+    "1350": {
+        "difficulty": "hard",
+        "maxAcceptance": 58.82352941176471
+    },
+    "1400": {
+        "difficulty": "hard",
+        "maxAcceptance": 57.7
+    },
+    "1450": {
+        "difficulty": "hard",
+        "maxAcceptance": 56.78391959798995
+    },
+    "1500": {
+        "difficulty": "hard",
+        "maxAcceptance": 55.11221945137157
+    },
+    "1550": {
+        "difficulty": "hard",
+        "maxAcceptance": 54.1
+    },
+    "1600": {
+        "difficulty": "hard",
+        "maxAcceptance": 52.82331511839708
+    },
+    "1650": {
+        "difficulty": "hard",
+        "maxAcceptance": 51.79331306990882
+    },
+    "1700": {
+        "difficulty": "hard",
+        "maxAcceptance": 50.98039215686274
+    },
+    "1750": {
+        "difficulty": "hard",
+        "maxAcceptance": 49.83050847457628
+    },
+    "1800": {
+        "difficulty": "hard",
+        "maxAcceptance": 49.177330895795244
+    },
+    "1850": {
+        "difficulty": "hard",
+        "maxAcceptance": 48.275862068965516
+    },
+    "1900": {
+        "difficulty": "hard",
+        "maxAcceptance": 47.494942282518146
+    },
+    "1950": {
+        "difficulty": "hard",
+        "maxAcceptance": 46.53465346534654
+    },
+    "2000": {
+        "difficulty": "hard",
+        "maxAcceptance": 45.6
+    },
+    "2050": {
+        "difficulty": "hard",
+        "maxAcceptance": 44.61709211986681
+    },
+    "2100": {
+        "difficulty": "hard",
+        "maxAcceptance": 43.56435643564357
+    },
+    "2150": {
+        "difficulty": "hard",
+        "maxAcceptance": 42.8
+    },
+    "2200": {
+        "difficulty": "hard",
+        "maxAcceptance": 42.285276073619634
+    },
+    "2250": {
+        "difficulty": "hard",
+        "maxAcceptance": 41.312741312741316
+    },
+    "2300": {
+        "difficulty": "hard",
+        "maxAcceptance": 40.7
+    },
+    "2350": {
+        "difficulty": "hard",
+        "maxAcceptance": 39.86254295532646
+    },
+    "2400": {
+        "difficulty": "hard",
+        "maxAcceptance": 39.374053508329126
+    },
+    "2450": {
+        "difficulty": "hard",
+        "maxAcceptance": 38.645418326693225
+    },
+    "2500": {
+        "difficulty": "hard",
+        "maxAcceptance": 37.7
+    },
+    "2550": {
+        "difficulty": "hard",
+        "maxAcceptance": 36.54518222666001
+    },
+    "2600": {
+        "difficulty": "hard",
+        "maxAcceptance": 35.8974358974359
+    },
+    "2650": {
+        "difficulty": "hard",
+        "maxAcceptance": 34.898612593383135
+    },
+    "2700": {
+        "difficulty": "hard",
+        "maxAcceptance": 34.00576368876081
+    },
+    "2750": {
+        "difficulty": "hard",
+        "maxAcceptance": 33.057851239669425
+    },
+    "2800": {
+        "difficulty": "hard",
+        "maxAcceptance": 31.72043010752688
+    },
+    "2850": {
+        "difficulty": "hard",
+        "maxAcceptance": 29.92125984251969
+    },
+    "2900": {
+        "difficulty": "hard",
+        "maxAcceptance": 27.67295597484277
+    },
+    "2950": {
+        "difficulty": "hard",
+        "maxAcceptance": 24.875621890547265
+    },
+    "3000": {
+        "difficulty": "hard",
+        "maxAcceptance": 19.374369323915236
+    }
+}

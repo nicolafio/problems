@@ -1,9 +1,18 @@
-const { resolve, parse } = require('path');
+const { resolve, parse, dirname } = require('path');
 const { readdirSync, readFileSync, stat } = require('fs');
 const { spawnSync } = require('child_process');
 
-const FOLDERS_NOT_CONTAINING_BAEKJOON_PROBLEMS =
-    new Set(['.git', 'assets', 'hackerrank', 'leetcode']);
+const FOLDERS_NOT_CONTAINING_PROBLEM_ATTEMPTS =
+    new Set(['.git', 'assets', 'hackerrank']);
+
+const LEETCODE_PROBLEMS =
+    JSON.parse(readFileSync(`${__dirname}/assets/24q4/leetcode-problems.json`, 'utf8'));
+
+const LEETCODE_PROBLEMS_MIN_RATING =
+    Math.min(...Object.values(LEETCODE_PROBLEMS).map(p => p.rating));
+
+const LEETCODE_PROBLEMS_MAX_RATING =
+    Math.max(...Object.values(LEETCODE_PROBLEMS).map(p => p.rating));
 
 const LANGUAGE_BY_EXTENSION = new Map([
     ['.c', 'C'],
@@ -20,29 +29,37 @@ const LANGUAGE_BY_EXTENSION = new Map([
     ['.scala', 'Scala'],
 ]);
 
+const PLATFORMS = new Set([
+    'baekjoon',
+    'leetcode'
+]);
+
 const LANGUAGES = new Set(LANGUAGE_BY_EXTENSION.values());
-const BAEKJOON_MAX_TIER = 30;
-const BAEKJOON_ATTEMPTS_TO_TIER_MASTERY = 1;
-const BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY = 30;
-const BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY = 3;
+const MAX_TIER = 30;
+const ATTEMTPS_TO_TIER_MASTERY = 4;
+const BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY = 30;
+const EXTRA_MINUTES_PER_TIER_FOR_MASTERY = 3;
 
 function main() {
     const requestedLanguage = argsInclude('l', 'lang', 'language');
     const requestedSource = argsInclude('s', 'src', 'source');
-    const printLanguage = requestedLanguage || !requestedSource;
-    const printSource = requestedSource || !requestedLanguage;
+    const requestedPlatform = argsInclude('p', 'pla', 'platform')
+    const printLanguage = requestedLanguage || (!requestedSource && !requestedPlatform);
+    const printSource = requestedSource || (!requestedLanguage && !requestedPlatform);
+    const printPlatform = requestedPlatform || (!requestedLanguage && !requestedPlatform);
 
     if (argsInclude('info')) {
         console.log(
-            JSON.stringify({
-                languages: baekjoonMidTiersByLanguage(),
-                tiers: [...baekjoonTiers()].filter(({attempts}) => attempts.length > 0)
-            }, null, 4)
+            JSON.stringify(Object.fromEntries([...PLATFORMS].map((p) => ({
+                languages: midTierByLanguage(p),
+                tiers: [...tiers(p)].filter(({attempts}) => attempts.length > 0)
+            }))), null, 4)
         );
         return;
     }
 
     let language = null;
+    let platform = null;
 
     for (const [e, l] of LANGUAGE_BY_EXTENSION) {
         if (argsInclude(e, e.substring(1), l, l.toLowerCase())) {
@@ -51,37 +68,50 @@ function main() {
         }
     }
 
+    for (const p of PLATFORMS) {
+        if (argsInclude(p)) {
+            platform = p;
+        }
+    }
+
     if (!language) {
         language = pickRandomLanguage();
     }
 
+    if (!platform) {
+        platform = pickRandomPlatform();
+    }
+
     if (printSource)
-        console.log(`Source: ${pickRandomSource(language)}`);
+        console.log(`Source: ${pickRandomSource(platform, language)}`);
 
     if (printLanguage)
         console.log(`Language: ${language}`);
 
-    printBaekjoonLevelProgress(language).catch(console.error);
+    if (printPlatform)
+        console.log(`Platform: ${platform}`)
+
+    printLevelProgress(platform, language).catch(console.error);
 }
 
-function printBaekjoonTierProgress(language, timeCutoff) {
-    const {tier, solvedWithinLimit} = baekjoonMidTier(language, timeCutoff);
+function printTierProgress(platform, language, timeCutoff) {
+    const {tier, solvedWithinLimit} = midTier(platform, language, timeCutoff);
 
     console.log('★'.repeat(tier));
 
     let checkBoxes = '';
 
-    for (let i = 0; i < BAEKJOON_ATTEMPTS_TO_TIER_MASTERY; i++) {
+    for (let i = 0; i < ATTEMTPS_TO_TIER_MASTERY; i++) {
         if (i < solvedWithinLimit) checkBoxes += '● ';
         else checkBoxes += '○ ';
     }
 
-    console.log(`For ${language} you are at tier ${tier}`)
+    console.log(`For ${platform} ${language} you are at tier ${tier}`)
 
 }
 
-async function printBaekjoonLevelProgress(language) {
-    const solved = [...baekjoonProblemAttempts()]
+async function printLevelProgress(platform, language) {
+    const solved = [...problemAttempts()]
         .filter(a => a.solveDate)
         .sort((a, b) => a.solveDate - b.solveDate);
 
@@ -93,7 +123,7 @@ async function printBaekjoonLevelProgress(language) {
 
     expByTier.set(1, baseSolutionExp);
 
-    for (let i = 2; i <= BAEKJOON_MAX_TIER; i++) {
+    for (let i = 2; i <= MAX_TIER; i++) {
         expByTier.set(i, nextTierExp(expByTier.get(i - 1)));
     }
 
@@ -110,7 +140,7 @@ async function printBaekjoonLevelProgress(language) {
     for (attempt of solved) {
         solvedCount++;
 
-        const {tier} = baekjoonMidTier(attempt.language, attempt.solveDate);
+        const { tier } = midTier(platform, attempt.language, attempt.solveDate);
 
         if (attempt.tier === 0 || isNaN(attempt.tier)) {
             if (!foundAttemptWithoutTierClassification) {
@@ -145,13 +175,14 @@ async function printBaekjoonLevelProgress(language) {
 
     const progress = (levelExp - expToNextLevel) / levelExp;
     printProgressASCIIArt(progress, `Lv.${level}`);
-    printBaekjoonTierProgress(language, Date.now());
+    printTierProgress(platform, language, Date.now());
 
-    if (language != attempt.language)
-        printBaekjoonTierProgress(attempt.language, attempt.solveDate);
+    if (language !== attempt.language)
+        printTierProgress(platform, attempt.language, attempt.solveDate);
 
     process.stdout.write(`You solved: ${String(solvedCount)} problems\n`);
     process.stdout.write(`Last attempt: \n`);
+    process.stdout.write(`${'Platform'.padStart(10, ' ')}: ${attempt.platform}\n`)
     process.stdout.write(`${'Title'.padStart(10, ' ')}: ${attempt.title}\n`)
     process.stdout.write(`${'Language'.padStart(10, ' ')}: ${attempt.language}\n`)
     process.stdout.write(`${'Tier'.padStart(10, ' ')}: ${attempt.tier}\n`);
@@ -220,7 +251,7 @@ function argsInclude(...items) {
     return false;
 }
 
-function pickRandomSource(language) {
+function pickRandomSource(platform, language) {
     let difficulty = 'edge';
 
     if (argsInclude('easy', 'e'))
@@ -235,40 +266,54 @@ function pickRandomSource(language) {
     if (argsInclude('hard', 'h'))
         difficulty = 'hard';
 
-    // Use the Korean online judge.
+    const tier = pickRandomTier(difficulty, platform, language);
 
-    return (
-        'https://www.acmicpc.net/problemset' +
-        '?sort=random_asc' +
-        '&submit=pac%2Cfa%2Cus' +
-        `&tier=${pickRandomTierInBaekjoon(difficulty, language)}` +
-        '&lucky=1' +
-        '&english=1'
-    );
+    // Use LeetCode
+    if (platform === 'leetcode') {
+        const problems =
+            Object.values(LEETCODE_PROBLEMS)
+                .filter(p => convertLeetcodeRatingToTier(p.rating) === tier)
+        const random = Math.random();
+        const index = Math.min(problems.length, Math.floor(random * problems.length));
+        const problem = problems[index];
+        return problem.problem_URL;
+    }
+
+    // Use the Korean online judge.
+    if (platform === 'baekjoon') {
+        return (
+            'https://www.acmicpc.net/problemset' +
+            '?sort=random_asc' +
+            '&submit=pac%2Cfa%2Cus' +
+            `&tier=${tier}` +
+            '&lucky=1' +
+            '&english=1'
+        );
+    }
 }
 
-function pickRandomTierInBaekjoon(difficulty, language) {
+function pickRandomTier(difficulty, platform, language) {
     const ranges = {};
-    const midTier = baekjoonMidTier(language).tier;
+    const mid = midTier(platform, language).tier;
 
     ranges.easy = {
         min: 1,
-        max: Math.max(midTier - 1, 1)
+        max: Math.max(mid - 1, 1)
     };
 
     ranges.medium = {
-        min: midTier,
-        max: Math.min(midTier + 2, BAEKJOON_MAX_TIER)
+        min: mid,
+        max: Math.min(mid + 2, MAX_TIER)
     };
 
     ranges.edge = {
-        min: Math.min(ranges.medium.max + 1, BAEKJOON_MAX_TIER),
-        max: Math.min(ranges.medium.max + 3, BAEKJOON_MAX_TIER)
+        min: Math.min(ranges.medium.max + 1, MAX_TIER),
+        max: Math.min(ranges.medium.max + 3, MAX_TIER)
     };
 
     ranges.hard = {
-        min: Math.min(ranges.edge.max + 1, BAEKJOON_MAX_TIER),
-        max: BAEKJOON_MAX_TIER
+        min: Math.min(ranges.edge.max + 1, MAX_TIER),
+        max: MAX_TIER
     };
 
     const {min, max} = ranges[difficulty];
@@ -288,22 +333,30 @@ function pickRandomLanguage() {
     return 'JavaScript';
 }
 
-const baekjoonMidTier = function (language, timeCutoff = new Date()) {
-    return baekjoonMidTiersByLanguage(timeCutoff)[language];
+function pickRandomPlatform() {
+    for (const platform of PLATFORMS)
+        if (argsInclude(platform))
+            return platform;
+    if (Math.random() < .5) return 'baekjoon';
+    return 'leetcode';
 }
 
-const baekjoonMidTiersByLanguage = memoizedUnary(function(timeCutoff = new Date()) {
+const midTier = function (platform, language, timeCutoff = new Date()) {
+    return midTierByLanguage(platform, timeCutoff)[language];
+}
+
+const midTierByLanguage = memoized(function(platform, timeCutoff = new Date()) {
     const result = {};
 
     for (const language of LANGUAGES) {
         let mid = 1;
-        for (const tier of baekjoonTiers(timeCutoff)) {
+        for (const tier of tiers(platform, timeCutoff)) {
             if (tier.language === language && tier.mastered) {
                 mid = Math.max(tier.tier + 1, mid);
             }
         }
-        for (const tier of baekjoonTiers(timeCutoff)) {
-            if (tier.language === language && tier.tier == mid) {
+        for (const tier of tiers(platform, timeCutoff)) {
+            if (tier.language === language && tier.tier === mid) {
                 result[language] = tier;
             }
         }
@@ -312,29 +365,29 @@ const baekjoonMidTiersByLanguage = memoizedUnary(function(timeCutoff = new Date(
     return result;
 });
 
-
-const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date()) {
-    const allAttempts = [...baekjoonProblemAttempts()]
+const tiers = memoizedGenerator(function* (platform, timeCutoff = new Date()) {
+    const allAttempts = [...problemAttempts()]
         .filter(a => (a.solveDate || a.fetchDate) <= timeCutoff)
+        .filter(a => a.platform === platform)
         .sort((a, b) => b.fetchDate - a.fetchDate);
 
     for (const language of LANGUAGES) {
         const attemptsWithLanguage = allAttempts.filter(a => a.language === language);
 
-        for (let tier = BAEKJOON_MAX_TIER, mastered = false; tier >= 1; tier--) {
-            const attempts = attemptsWithLanguage.filter(a => a.tier == tier);
+        for (let tier = MAX_TIER, mastered = false; tier >= 1; tier--) {
+            const attempts = attemptsWithLanguage.filter(a => a.tier === tier);
             let progress = 0;
             let solvedWithinLimit = 0;
 
             for (const mode of ['same-tier', 'same-tier-or-above']) {
                 let count = 0, total = 0;
                 for (const attempt of attemptsWithLanguage) {
-                    if (mode == 'same-tier' && attempt.tier !== tier) continue;
-                    if (mode == 'same-tier-or-above' && attempt.tier < tier) continue;
+                    if (mode === 'same-tier' && attempt.tier !== tier) continue;
+                    if (mode === 'same-tier-or-above' && attempt.tier < tier) continue;
 
                     total++;
 
-                    if (total > BAEKJOON_ATTEMPTS_TO_TIER_MASTERY) break;
+                    if (total > ATTEMTPS_TO_TIER_MASTERY) break;
                     if (attempt.solvedWithinLimit) count++;
                 }
                 if (count > solvedWithinLimit) {
@@ -343,9 +396,9 @@ const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date())
             }
 
             if (!mastered) {
-                progress = solvedWithinLimit / BAEKJOON_ATTEMPTS_TO_TIER_MASTERY;
+                progress = solvedWithinLimit / ATTEMTPS_TO_TIER_MASTERY;
 
-                if (solvedWithinLimit >= BAEKJOON_ATTEMPTS_TO_TIER_MASTERY) {
+                if (solvedWithinLimit >= ATTEMTPS_TO_TIER_MASTERY) {
                     mastered = true;
                 }
             }
@@ -366,65 +419,76 @@ const baekjoonTiers = memoizedUnaryGenerator(function* (timeCutoff = new Date())
     }
 });
 
-const baekjoonProblemAttempts = lazyGenerator(function* () {
+const problemAttempts = lazyGenerator(function* () {
     const attemptsYieled = new Set();
     yield* (function* gen(dir = __dirname) {
-        const nodes = readdirSync(dir, { withFileTypes: true });
+        const folderPaths =
+            readdirSync(dir, { withFileTypes: true })
+                .filter(n => n.isDirectory())
+                .map(n => n.name)
+                .filter(n => !FOLDERS_NOT_CONTAINING_PROBLEM_ATTEMPTS.has(n))
+                .map(n => `${dir}/${n}`)
+                .filter(p => !ignoredByGit(p));
 
-        for (const node of nodes) {
-            if (FOLDERS_NOT_CONTAINING_BAEKJOON_PROBLEMS.has(node.name)) continue;
-
-            const path = resolve(dir, node.name);
-
-            if (ignoredByGit(path)) continue;
-
-            if (node.isDirectory()) {
-                yield* gen(path);
-                continue;
-            }
-
-            if (!node.isFile()) continue;
-            if (node.name.toLowerCase() !== 'readme.md') continue;
-
-            const markdown = readFileSync(path, { encoding: 'utf-8' });
-            let problem = parseBaekjoonProblemDetailsFromReadme(markdown);
-
-            if (!problem) continue;
-
-            problem = {...problem, dir};
-
-            let minutesPerAttemptToMastery =
-                BAEKJOON_BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY;
-
-            if (problem.tier > 1) {
-                const extraMinutes =
-                    (problem.tier - 1) * BAEKJOON_EXTRA_MINUTES_PER_TIER_FOR_MASTERY
-                minutesPerAttemptToMastery += extraMinutes;
-            }
-
-            for (const attempt of attempts(dir)) {
-                if (!attemptsYieled.has(attempt.path)) {
-                    attemptsYieled.add(attempt.path);
-
-                    let solvedWithinLimit = false;
-
-                    if (attempt.solveDate != null) {
-                        solvedWithinLimit =
-                            attempt.timeTakenToSolveMinutes <=
-                            minutesPerAttemptToMastery;
-                    }
-
-                    yield {
-                        ...problem,
-                        ...attempt,
-                        solvedWithinLimit
-                    };
-                }
+        for (const path of folderPaths) {
+            yield* gen(path);
+            const leetCodeAttemptsScout = scoutForLeetCodeProblemAttempts(path);
+            const baekjoonAttemptsScout = scoutForBaekjoonProblemAttempts(path);
+            for (const attempt of joinIterables(leetCodeAttemptsScout, baekjoonAttemptsScout)) {
+                if (attemptsYieled.has(attempt.path)) continue;
+                attemptsYieled.add(attempt.path);
+                yield attempt;
             }
         }
     })();
 });
 
+function* scoutForLeetCodeProblemAttempts(dir) {
+    if (!dir.startsWith(`${__dirname}/leetcode/`)) return;
+
+    const dirName = dirname(dir);
+    if (!(dirName in LEETCODE_PROBLEMS)) return;
+
+    const title = LEETCODE_PROBLEMS[dirName].title;
+    const number = LEETCODE_PROBLEMS[dirName].id;
+    const rating = LEETCODE_PROBLEMS[dirName].rating;
+    const tier = convertLeetcodeRatingToTier(rating);
+    const platform = 'leetcode';
+
+    const problem = { platform, title, number, rating, tier };
+
+    for (const attempt of attempts(dir, tier)) {
+        yield {...problem, ...attempt};
+    }
+}
+
+function* scoutForBaekjoonProblemAttempts(dir) {
+    const nodes = [...readdirSync(dir, { withFileTypes: true })];
+    const files = nodes.filter(n => n.isFile());
+    const readmeFile = files.find(f => f.name.toLowerCase() === 'readme.md');
+    if (!readmeFile) return;
+    const readmePath = `${dir}/${readmeFile.name}`;
+    const markdown = readFileSync(readmePath, {encoding: 'utf-8'});
+    let problem = parseBaekjoonProblemDetailsFromReadme(markdown);
+    if (!problem) return;
+    const platform = 'baekjoon';
+    problem = {...problem, dir, platform};
+    for (const attempt of attempts(dir, problem.tier)) {
+        yield {...problem, ...attempt};
+    }
+}
+
+
+function convertLeetcodeRatingToTier(rating) {
+    const minRating = LEETCODE_PROBLEMS_MIN_RATING;
+    const maxRating = LEETCODE_PROBLEMS_MAX_RATING;
+    const minTier = 1;
+    const maxTier = MAX_TIER;
+    const ratingRange = maxRating - minRating;
+    const tierRange = maxTier - minTier;
+    const unitValue = (rating - minRating) / ratingRange;
+    return minTier + Math.floor(unitValue * tierRange);
+}
 
 function parseBaekjoonProblemDetailsFromReadme(markdown) {
     const recognizedPatterns = [
@@ -453,8 +517,14 @@ function parseBaekjoonProblemDetailsFromReadme(markdown) {
     return null;
 }
 
-const attempts = memoizedUnaryGenerator(function* (problemDir) {
+const attempts = memoizedGenerator(function* (problemDir, problemTier) {
     const nodes = readdirSync(problemDir, { withFileTypes: true });
+
+    let minutesForMastery = BASE_MINUTES_PER_ATTEMPT_FOR_MASTERY;
+    if (problemTier > 1) {
+        const extraMinutes = (problemTier - 1) * EXTRA_MINUTES_PER_TIER_FOR_MASTERY
+        minutesForMastery += extraMinutes;
+    }
 
     for (const node of nodes) {
         if (!node.isFile()) continue;
@@ -473,6 +543,7 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
 
         let solveDate = null;
         let timeTakenToSolveMinutes = null;
+        let solvedWithinLimit = false;
         let fetchDate = null;
         const log = [...gitLogFollow(path)];
         let candidateSolution = null;
@@ -506,6 +577,7 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
         if (solveDate != null) {
             const timeTakenToSolveMilliseconds = solveDate - fetchDate;
             timeTakenToSolveMinutes = Math.ceil(timeTakenToSolveMilliseconds / 1000 / 60);
+            solvedWithinLimit = timeTakenToSolveMinutes <= minutesForMastery;
         }
 
         yield {
@@ -519,7 +591,9 @@ const attempts = memoizedUnaryGenerator(function* (problemDir) {
     }
 });
 
-const creationTime = memoizedUnary(function (path) {
+// ---- GIT UTILS ----
+
+const creationTime = memoized(function (path) {
     let result = null;
     for (const { date } of gitLogFollow(path)) {
         if (result === null) result = date;
@@ -528,8 +602,7 @@ const creationTime = memoizedUnary(function (path) {
     return result;
 });
 
-
-const gitLogFollow = memoizedUnaryGenerator(function* (path) {
+const gitLogFollow = memoizedGenerator(function* (path) {
     const { stderr, stdout, status } = git('log', '--follow', '--pretty=format:%ad%n%s', path);
 
     if (status !== 0) {
@@ -547,7 +620,7 @@ const gitLogFollow = memoizedUnaryGenerator(function* (path) {
     }
 });
 
-const ignoredByGit = memoizedUnary(function(path) {
+const ignoredByGit = memoized(function(path) {
     // https://git-scm.com/docs/git-check-ignore
 
     const { status } = git('check-ignore', '--quiet', path);
@@ -559,40 +632,130 @@ function git(...args) {
     return spawnSync('git', args, { cwd: __dirname, encoding: 'utf-8' });
 }
 
+// ---- ALGO / DATA STRUCTURE UTILS ----
+
 function lazyGenerator(gen) {
-    let invoked = false;
-    let result;
+    // Using linked list approach to memorize generated values.
+    // Will invoke generator `gen` to retrieve next value if not memorized yet.
+    // Will return a generator function that yields all generated values from the start and invokes `gen` to generate
+    // the next value.
+    // This function is limited by the available space in the heap. It will generate new values on-demand.
+    // Will throw error as thrown by original generator.
+    let first;
+    let returned;
+    let error;
+    let errored = false;
+    let done = false;
+
+    return function* () {
+        if (done) {
+            for (let current = first; current; current = current.next)
+                yield current.value;
+            if (errored)
+                throw error;
+            return returned;
+        }
+        const generator = gen();
+        for (let current = first, prev = null; true; prev = current, current = current.next) {
+            if (current) {
+                yield current.value;
+                continue;
+            }
+            let next;
+            try {
+                next = generator.next();
+            }
+            catch (e) {
+                done = true;
+                errored = true;
+                error = e;
+                throw error;
+            }
+            if (next.done) {
+                done = true;
+                returned = next.value;
+                return returned;
+            }
+            current = { value: next.value };
+            if (prev) prev.next = current;
+            if (!first) first = current;
+            yield current.value;
+        }
+    }
+}
+
+function memoizedGenerator(gen) {
+    // Like lazyGenerator, but accepts parameters and saves generated values for every
+    // combination of arguments (like Python's functools.cached).
+    //
+    // Makes use of weak allocation when possible, so that when arguments
+    // get garbage collected, so can the memorized values.
+
+    const getLazyGenerator = memoized(function (...args) {
+        return lazyGenerator(function* () {
+            yield* gen(...args);
+        });
+    });
+
     return function* (...args) {
-        if (invoked) {
-            yield* result;
-            return;
-        }
-        invoked = true;
-        result = [...gen(...args)];
-        yield* result;
+        const lazyGen = getLazyGenerator(...args)
+        yield* lazyGen();
     }
 }
 
-function memoizedUnaryGenerator(gen) {
-    const memo = new Map();
-    return function* (arg) {
-        if (memo.has(arg)) {
-            yield* memo.get(arg);
-            return;
+function memoized(fn) {
+    // Memoization like Python's functools.cached functions.
+    //
+    // Makes use of weak allocation when possible, so that when arguments
+    // get garbage collected, so can the memorized values.
+    //
+    const memo = {
+        functions: {
+            strong: new Map(),
+            weak: new WeakMap()
+        },
+        values: {
+            strong: new Map(),
+            weak: new WeakMap()
         }
-        const res = [...gen(arg)];
-        memo.set(arg, res);
-        yield* res;
+    };
+
+    return function (arg, ...rest) {
+        if (rest.length === 0) {
+            for (const strength of ['strong', 'weak'])
+                if (memo.values[strength].has(arg))
+                    return memo.values[strength].get(arg);
+            const result = fn(arg);
+            try {
+                memo.values.weak.set(arg, result);
+            }
+            catch (_) {
+                memo.values.strong.set(arg, result);
+            }
+            return result;
+        }
+        for (const strength of ['strong', 'weak'])
+            if (memo.functions[strength].has(arg))
+                return memo.functions[strength].get(arg)(...rest);
+        const subFn = makeSub(arg);
+        try {
+            memo.functions.weak.set(arg, subFn);
+        }
+        catch (_) {
+            memo.functions.strong.set(arg, subFn);
+        }
+        return subFn(...rest);
+    }
+    function makeSub(arg) {
+        return memoized(function(...args) {
+            return fn(arg, ...args);
+        });
     }
 }
 
-function memoizedUnary(fn) {
-    const memo = new Map();
-    return function (arg) {
-        if (memo.has(arg)) return memo.get(arg);
-        const res = fn(arg);
-        memo.set(arg, res);
-        return res;
+function* joinIterables(...iterables) {
+    for (const iterable of iterables) {
+        yield* iterable;
     }
 }
 

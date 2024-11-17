@@ -42,3 +42,5 @@ target/
 **/*.rs.bk
 Cargo.lock
 tags
+
+.idea
