@@ -274,7 +274,8 @@ function pickRandomSource(platform, language) {
             Object.values(LEETCODE_PROBLEMS)
                 .filter(p => convertLeetcodeRatingToTier(p.rating) === tier)
         const random = Math.random();
-        const index = Math.min(problems.length, Math.floor(random * problems.length));
+        const maxIndex = problems.length - 1;
+        const index = Math.min(maxIndex, Math.floor(random * problems.length));
         const problem = problems[index];
         return problem.problem_URL;
     }
